@@ -1,0 +1,16 @@
+[
+{
+  "modid": "moonlight_with_wolf",
+  "name": "MoonlightWithWolf",
+  "description": "moonlight_with_wolf",
+  "version": "1.0",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Someoneice"],
+  "credits": "Moon!!",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
