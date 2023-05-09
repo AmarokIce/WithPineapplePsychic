@@ -2,8 +2,6 @@ package club.someoneice.pineapplepsychic.config;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import net.shadew.json.Json;
 import net.shadew.json.JsonNode;
 
