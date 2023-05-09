@@ -32,8 +32,7 @@ public class Json5Bean {
 
     public String getString(String tag, String defaultValue) {
         if (CONFIG_MAP.containsKey(tag)) {
-            Object obj = CONFIG_MAP.get(tag);
-            return ((JsonNode) obj).asString();
+            return CONFIG_MAP.get(tag).asString();
         } else {
             CONFIG_MAP.put(tag, JsonNode.string(defaultValue));
             return defaultValue;
