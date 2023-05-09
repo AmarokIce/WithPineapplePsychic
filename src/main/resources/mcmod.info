@@ -1,0 +1,16 @@
+[
+{
+  "modid": "pineapple_psychic",
+  "name": "PineapplePsychic",
+  "description": "PineapplePsychic",
+  "version": "1.1.1",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Someoneice"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
