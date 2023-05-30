@@ -6,10 +6,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 
 public class AutoRender {
-    public AutoRender() {
-
-    }
-
     public static Item registryRenderObj(Item item, String name, String modid) {
         GameRegistry.registerItem(item, name, modid);
         return item;

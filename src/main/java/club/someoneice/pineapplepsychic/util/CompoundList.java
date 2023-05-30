@@ -1,182 +1,160 @@
 package club.someoneice.pineapplepsychic.util;
 
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class CompoundList {
-    private final ItemStack[] itemList;
+    private final List<ItemStack> baseList;
 
-    public CompoundList(int i) {
-        this.itemList = new ItemStack[i];
-        initList();
+    public CompoundList(ItemStack ... item) {
+        this.baseList = Lists.newCopyOnWriteArrayList(Arrays.asList(item));
     }
 
-    public CompoundList(List<ItemStack> list) {
-        this.itemList = new ItemStack[list.size()];
-        for (int o = 0; o < list.size(); o++) itemList[o] = list.get(o);
+    public ItemStack get(int slot) {
+        return this.baseList.get(slot);
     }
 
-    public CompoundList(List<ItemStack> list, int i) {
-        this.itemList = new ItemStack[i];
-        for (int o = 0; o < i; o++) itemList[o] = list.get(o);
+    public ItemStack getCopy(int slot) {
+        return this.baseList.get(slot).copy();
     }
 
-    public void put(ItemStack item) {
-        for (int i = 0; i < this.itemList.length; i++) {
-            if (this.itemList[i] == null) {
-                this.itemList[i] = item;
-                return;
-            }
-        }
+    public boolean contains(ItemStack item) {
+        return this.baseList.contains(item);
     }
 
-    public void set(ItemStack item, int i) {
-        this.itemList[i] = item;
+    public boolean contains(Item item) {
+        return this.asItemList().contains(item);
     }
 
-    public ItemStack get(int i) {
-        return this.itemList[i];
+    public boolean containsAll(CompoundList list) {
+        return new HashSet<>(this.baseList).containsAll(list.baseList);
     }
 
-    public void remove(int i) {
-        this.itemList[i] = null;
-    }
-
-    public int firstEmptySlot() {
-        for (int i = 0; i < this.size(); i ++) {
-            if (this.itemList[i] == null) return i;
-        }
-
-        return -1;
-    }
-
-    public boolean getEmptySlot(int i) {
-        return this.itemList[i] == null;
-    }
-
-    public boolean equalItem(CompoundList compoundList) {
-        List<Item> itemList = new ArrayList<>();
-        List<Item> itemList1 = new ArrayList<>();
-
-        if (nonullSize() != compoundList.nonullSize()) return false;
-
-        for (int i = 0; i < nonullSize(); i ++) {
-            itemList.add(get(i).getItem());
-            itemList1.add(compoundList.get(i).getItem());
-        }
-
-        return !itemList.retainAll(itemList1);
-    }
-
-
-    public boolean equal(CompoundList compoundList) {
-        if (this.nonullSize() != compoundList.nonullSize()) return false;
-        return !getAllItemStack().retainAll(compoundList.getAllItemStack());
-    }
-
-    public boolean excuse(CompoundList compoundList) {
-        return new HashSet<>(compoundList.getAllItemStack()).containsAll(this.getAllItemStack());
-    }
-
-    public boolean excuse(List<ItemStack> itemList) {
-        return new HashSet<>(itemList).containsAll(this.getAllItemStack());
-    }
-
-    public boolean excuseItem(CompoundList compoundList) {
-        return new HashSet<>(compoundList.getAllItem()).containsAll(this.getAllItem());
-    }
-
-    public boolean excuseItem(List<ItemStack> itemList) {
-        List<Item> list = new ArrayList<>();
-        for (ItemStack item : itemList) {
-            list.add(item.getItem());
-        }
-
-        if (!list.isEmpty()) return new HashSet<>(getAllItem()).containsAll(list);
-        else return false;
-    }
-
-    public List<ItemStack> getAllItemStack() {
-        List<ItemStack> list = new ArrayList<>();
-        for (ItemStack itemStack : this.itemList) {
-            if (itemStack != null) list.add(itemStack);
-        }
-
-        return list;
-    }
-
-    private List<Item> getAllItem() {
-        List<Item> list = new ArrayList<>();
-        for (ItemStack itemStack : this.itemList) {
-            if (itemStack != null) list.add(itemStack.getItem());
-        }
-
-        return list;
-    }
-
-    public int size() {
-        return this.itemList.length;
-    }
-
-    public int nonullSize() {
-        int i = 0;
-        for (ItemStack itemStack : this.itemList) {
-            if (itemStack != null) ++i;
-        }
-
-        return i;
-    }
-
-    public void makeEmpty() {
-        initList();
-    }
-
-    public Boolean isEmpty() {
-        for (ItemStack itemStack : this.itemList) {
-            if (itemStack != null) return false;
+    public boolean containsAll(Collection<ItemStack> ItemList) {
+        ArrayList<Item> itm = this.asItemList();
+        for (ItemStack it : ItemList) {
+            if (!itm.contains(it.getItem())) return false;
         }
 
         return true;
     }
 
-    public void writeToNBT(NBTTagCompound nbt) {
-        NBTTagList nbtList = new NBTTagList();
-        nbtList.func_150303_d();
-        for (ItemStack item : this.itemList) {
-            if (item == null) continue;
-            NBTTagCompound nbtTag = new NBTTagCompound();
-            nbtList.appendTag(item.writeToNBT(nbtTag));
+    public boolean containsAllWithMeta(Collection<ItemStack> ItemList) {
+        for (ItemStack it1 : ItemList) {
+            for (ItemStack it2 : this.baseList) {
+                if (it1.getItem() == it2.getItem()
+                        || it1.stackSize == it2.stackSize
+                        || it1.getItemDamage() == it2.getItemDamage()
+                ) break;
+                return false;
+            }
         }
 
-        nbt.setTag("NonnullItemStackList", nbtList);
+        return true;
     }
 
-    public void readFromNBT(NBTTagCompound nbt) {
-        if (nbt.hasKey("NonnullItemStackList")) {
-            NBTTagList nbtList = (NBTTagList) nbt.getTag("NonnullItemStackList");
-            for (int i = 0; i < nbtList.tagCount(); i ++) {
-                ItemStack item = ItemStack.loadItemStackFromNBT(nbtList.getCompoundTagAt(i));
-                if (item != null)
-                    put(item);
+    public void add(ItemStack item) {
+        this.baseList.add(item);
+    }
+
+    public void add(int i, ItemStack item) {
+        this.baseList.add(i, item);
+    }
+
+    public void add(Item item) {
+        this.baseList.add(new ItemStack(item));
+    }
+
+    public int size() {
+        return this.baseList.size();
+    }
+
+    public ArrayList<ItemStack> getListCopy() {
+        return Lists.newArrayList(this.baseList);
+    }
+
+    public void addAll(Collection<? extends ItemStack> ItemList) {
+        checkNotNull(ItemList);
+        this.baseList.addAll(ItemList);
+    }
+
+    public void remove(int i) {
+        this.baseList.remove(i);
+    }
+
+    public void remove(ItemStack item) {
+        this.baseList.remove(item);
+    }
+
+    public void remove(Item item) {
+        for (ItemStack it : this.baseList) {
+            if (it.getItem().equals(item)) {
+                this.baseList.remove(it);
+                return;
             }
         }
     }
 
-    private void initList() {
-        Arrays.fill(this.itemList, null);
+    public CompoundList copy() {
+        CompoundList list = new CompoundList();
+        list.addAll(this.getListCopy());
+        return list;
+    }
+
+    public ArrayList<Item> asItemList() {
+        ArrayList<Item> list = Lists.newArrayList();
+        this.baseList.forEach(it -> list.add(it.getItem()));
+        return list;
+    }
+
+    public NBTTagCompound writeToNbt(NBTTagCompound nbt) {
+        NBTTagList list = new NBTTagList();
+        for (ItemStack item : this.baseList)
+            list.appendTag(item.writeToNBT(new NBTTagCompound()));
+
+        nbt.setTag("CompoundList", list);
+        return nbt;
+    }
+
+    public NBTTagCompound writeToNbt() {
+        NBTTagCompound nbt = new NBTTagCompound();
+        NBTTagList list = new NBTTagList();
+        this.baseList.forEach(it -> list.appendTag(it.copy().writeToNBT(new NBTTagCompound())));
+
+        nbt.setTag("CompoundList", list);
+        return nbt;
+    }
+
+
+    public void readFromNbt(NBTTagCompound nbt) {
+        if (nbt.hasKey("CompoundList")) {
+            NBTTagList list = (NBTTagList) nbt.getTag("CompoundList");
+            for (int i = 0; i < list.tagCount(); i ++) {
+                this.baseList.add(ItemStack.loadItemStackFromNBT(list.getCompoundTagAt(i)));
+            }
+        }
     }
 
     @Override
     public String toString() {
-        Gson gson = new Gson();
-        return gson.toJson(this.itemList);
+        List<String> list = Lists.newArrayList();
+        this.baseList.forEach(it -> list.add(it.getItem().getUnlocalizedName()));
+        return new Gson().toJson(list);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        else if (obj instanceof CompoundList) return this.containsAll((CompoundList) obj);
+        else if (obj instanceof List) return this.containsAll((List) obj);
+        else return false;
     }
 }

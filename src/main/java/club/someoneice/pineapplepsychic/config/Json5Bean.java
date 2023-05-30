@@ -18,13 +18,13 @@ public class Json5Bean {
     private final Map<String, JsonNode> CONFIG_MAP;
 
     public Json5Bean(String configName) {
-        String path = System.getProperty("user.dir") + File.separator + "config" + File.separator + configName + ".json";
+        String path = System.getProperty("user.dir") + File.separator + "config" + File.separator + configName + ".json5";
         JSON_BEAN = new JsonHelper(path);
         CONFIG_MAP = JSON_BEAN.readFronJson();
     }
 
     public Json5Bean(String configName, IPineappleConfig object) {
-        String path = System.getProperty("user.dir") + File.separator + "config" + File.separator + configName + ".json";
+        String path = System.getProperty("user.dir") + File.separator + "config" + File.separator + configName + ".json5";
         JSON_BEAN = new JsonHelper(path);
         CONFIG_MAP = JSON_BEAN.readFronJson();
         ConfigData.configMap.put(configName, object);

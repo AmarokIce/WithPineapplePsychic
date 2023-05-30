@@ -30,6 +30,17 @@ allprojects {
     }
 }
 
+configurations {
+    includeCompile
+    compile.extendsFrom includeCompile
+}
+
+jar {
+    from {
+        configurations.includeCompile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
 sourceCompatibility = targetCompatibility = "1.8"
 
 version = "1.1.1"
@@ -41,8 +52,15 @@ minecraft {
     runDir = "eclipse"
 }
 
+repositories {
+    flatDir {
+        dir 'libs'
+    }
+}
+
 dependencies {
-    implementation fileTree(dir: 'lib', includes: ['*.jar'])
+    // implementation fileTree(dir: 'lib', includes: ['*.jar'])
+    includeCompile 'net.shadew.json:json-0.4'
 }
 
 processResources {

@@ -11,7 +11,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-public class NonnullList {
+@Deprecated
+public final class NonnullList {
     private final ItemStack[] itemList;
     private final ItemStack AIR = new ItemStack(Blocks.air);
 
