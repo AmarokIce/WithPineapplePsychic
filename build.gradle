@@ -16,6 +16,7 @@ buildscript {
 }
 
 apply plugin: 'forge'
+apply plugin: 'maven-publish'
 
 tasks.withType(Jar) {
     compileJava.options.encoding = 'UTF-8'
@@ -43,7 +44,7 @@ jar {
 
 sourceCompatibility = targetCompatibility = "1.8"
 
-version = "1.1.1"
+version = "1.2.0"
 group= "club.someoneice.pineapplepsychic"
 archivesBaseName = "pineapplepsychic"
 
@@ -56,11 +57,20 @@ repositories {
     flatDir {
         dir 'libs'
     }
+
+    maven {
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/AmarokIce/amarokjsonforjava")
+        credentials {
+            username = "AmarokIce"
+            password = ProcessEnvironment.getenv("GITHUB_TOKEN")
+        }
+    }
 }
 
 dependencies {
-    // implementation fileTree(dir: 'lib', includes: ['*.jar'])
     includeCompile 'net.shadew.json:json-0.4'
+    includeCompile 'club.someoneice.json:amarok-json-for-java:1.0'
 }
 
 processResources {
@@ -85,3 +95,5 @@ processResources {
         archives sourcesJar
     }
 }
+
+apply from: 'maven.gradle'

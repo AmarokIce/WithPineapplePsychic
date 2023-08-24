@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+// Deprecated
+@Deprecated
 public class Json5Bean {
     private final JsonHelper JSON_BEAN;
     private final Map<String, JsonNode> CONFIG_MAP;
