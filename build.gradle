@@ -44,7 +44,7 @@ jar {
 
 sourceCompatibility = targetCompatibility = "1.8"
 
-version = "1.2.1"
+version = "1.2.2"
 group= "club.someoneice.pineapplepsychic"
 archivesBaseName = "pineapplepsychic"
 
@@ -70,7 +70,7 @@ repositories {
 
 dependencies {
     includeCompile 'net.shadew.json:json-0.4'
-    includeCompile 'club.someoneice.json:amarok-json-for-java:1.1'
+    includeCompile 'club.someoneice.json:amarok-json-for-java:1.2'
 }
 
 processResources {
