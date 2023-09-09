@@ -1,8 +1,6 @@
-package club.someoneice.pineapplepsychic;
+package club.someoneice.pineapplepsychic.command;
 
 import club.someoneice.pineapplepsychic.config.ConfigBean;
-import club.someoneice.pineapplepsychic.config.ConfigData;
-import club.someoneice.pineapplepsychic.config.IPineappleConfig;
 import club.someoneice.pineapplepsychic.util.Util;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -41,7 +39,7 @@ public class CommandSetConfig extends CommandBase {
         public void run() {
             IPineappleConfig config;
             HashMap<String, Object> map;
-            for (String str : ConfigData.configMap.keySet()) {
+            for (String str : ConfigBean.configMap.keySet()) {
                 if (str.equals(args[0])) {
                     String path = System.getProperty("user.dir") + File.separator + "config" + File.separator + str + ".json";
                     ConfigBean.JsonHelper helper = new ConfigBean.JsonHelper(path);
@@ -69,7 +67,7 @@ public class CommandSetConfig extends CommandBase {
                         }
                     }
 
-                    ConfigData.configMap.get(str).init();
+                    ConfigBean.configMap.get(str).init();
                     break;
                 }
             }

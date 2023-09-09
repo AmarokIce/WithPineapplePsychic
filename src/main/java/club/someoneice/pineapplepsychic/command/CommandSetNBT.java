@@ -1,4 +1,4 @@
-package club.someoneice.pineapplepsychic;
+package club.someoneice.pineapplepsychic.command;
 
 import club.someoneice.pineapplepsychic.core.NBTCore;
 import net.minecraft.command.CommandBase;

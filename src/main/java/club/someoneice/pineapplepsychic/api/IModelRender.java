@@ -1,5 +1,6 @@
-package club.someoneice.pineapplepsychic.core;
+package club.someoneice.pineapplepsychic.api;
 
+import club.someoneice.pineapplepsychic.core.AutoRender;
 import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -9,6 +10,7 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 
+@Deprecated
 public interface IModelRender {
     /**
      * If you want to render a item (or block on hand) with obj, use this interface and registry with @AutoRender

@@ -5,6 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 
+@Deprecated
 public class AutoRender {
     public static Item registryRenderObj(Item item, String name, String modid) {
         GameRegistry.registerItem(item, name, modid);

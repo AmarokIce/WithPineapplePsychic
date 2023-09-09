@@ -1,5 +1,7 @@
 package club.someoneice.pineapplepsychic.config;
 
+import club.someoneice.pineapplepsychic.command.IPineappleConfig;
+import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -12,9 +14,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class ConfigBean {
     private final JsonHelper JSON_BEAN;
     private final Map<String, Object> CONFIG_MAP;
+    public static final Map<String, IPineappleConfig> configMap = Maps.newHashMap();
 
     public ConfigBean(String configName) {
         String path = System.getProperty("user.dir") + File.separator + "config" + File.separator + configName + ".json";
@@ -26,7 +30,7 @@ public class ConfigBean {
         String path = System.getProperty("user.dir") + File.separator + "config" + File.separator + configName + ".json";
         JSON_BEAN = new JsonHelper(path);
         CONFIG_MAP = JSON_BEAN.readFronJson();
-        ConfigData.configMap.put(configName, object);
+        configMap.put(configName, object);
     }
 
     public String getString(String tag, String defaultValue) {

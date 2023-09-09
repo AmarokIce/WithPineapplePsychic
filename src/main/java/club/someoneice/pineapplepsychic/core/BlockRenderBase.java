@@ -16,6 +16,7 @@ import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 
+@Deprecated
 public class BlockRenderBase extends TileEntitySpecialRenderer {
     public static ResourceLocation texture;
     private final Class<? extends TileEntity> tileClazz;

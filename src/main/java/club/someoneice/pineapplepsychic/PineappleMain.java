@@ -1,7 +1,9 @@
 package club.someoneice.pineapplepsychic;
 
+import club.someoneice.pineapplepsychic.command.CommandSetConfig;
+import club.someoneice.pineapplepsychic.command.CommandSetNBT;
+import club.someoneice.pineapplepsychic.command.IPineappleConfig;
 import club.someoneice.pineapplepsychic.config.ConfigBean;
-import club.someoneice.pineapplepsychic.config.IPineappleConfig;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;

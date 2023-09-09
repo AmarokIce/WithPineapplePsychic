@@ -1,5 +1,6 @@
 package club.someoneice.pineapplepsychic.core;
 
+import club.someoneice.pineapplepsychic.api.IModelRender;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
