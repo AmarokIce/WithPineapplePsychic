@@ -25,8 +25,8 @@ public class PineappleMain {
 
     @Mod.EventHandler
     public static void onServerInitialization(FMLServerStartingEvent event) {
-        event.registerServerCommand(new CommandSetNBT());
-        event.registerServerCommand(new CommandSetConfig());
+        // event.registerServerCommand(new CommandSetNBT());
+        // event.registerServerCommand(new CommandSetConfig());
     }
 
     public static class PineappleConfig implements IPineappleConfig {

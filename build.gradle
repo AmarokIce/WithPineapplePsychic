@@ -59,12 +59,8 @@ repositories {
     }
 
     maven {
-        name = "GitHubPackages"
-        url = uri("https://maven.pkg.github.com/AmarokIce/amarokjsonforjava")
-        credentials {
-            username = "AmarokIce"
-            password = ProcessEnvironment.getenv("GITHUB_TOKEN")
-        }
+        name = "Amarok Repo"
+        url 'http://maven.snowlyicewolf.club/'
     }
 }
 
