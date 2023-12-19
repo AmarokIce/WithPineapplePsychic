@@ -11,7 +11,9 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath ('com.anatawa12.forge:ForgeGradle:1.2-1.1.+') {
+            changing = true
+        }
     }
 }
 
@@ -44,9 +46,9 @@ jar {
 
 sourceCompatibility = targetCompatibility = "1.8"
 
-version = "1.3.0"
-group= "club.someoneice.pineapplepsychic"
-archivesBaseName = "pineapplepsychic"
+archivesBaseName = project.ProjectName
+group= project.GroupID
+version = project.Version
 
 minecraft {
     version = "1.7.10-10.13.4.1614-1.7.10"
@@ -65,8 +67,8 @@ repositories {
 }
 
 dependencies {
-    includeCompile 'net.shadew.json:json-0.4'
-    includeCompile 'club.someoneice.json:amarok-json-for-java:1.2'
+    // includeCompile 'net.shadew.json:json-0.4'
+    includeCompile 'club.someoneice.json:amarok-json-for-java:1.4'
 }
 
 processResources {

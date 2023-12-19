@@ -1,6 +1,6 @@
 package club.someoneice.pineapplepsychic.config;
 
-import club.someoneice.pineapplepsychic.command.IPineappleConfig;
+import club.someoneice.pineapplepsychic.api.IPineappleConfig;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
