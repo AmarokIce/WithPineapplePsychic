@@ -6,7 +6,7 @@ import club.someoneice.json.PairList;
 import club.someoneice.json.node.JsonNode;
 import club.someoneice.json.node.MapNode;
 import club.someoneice.json.processor.Json5Builder;
-import club.someoneice.pineapplepsychic.command.IPineappleConfig;
+import club.someoneice.pineapplepsychic.api.IPineappleConfig;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import cpw.mods.fml.common.Loader;
@@ -17,16 +17,16 @@ import java.util.Map;
 import java.util.Set;
 
 @SuppressWarnings({"unchecked", "unused"})
-public class ConfigBeanJson5 {
+public class ConfigBeanV2 {
     private final PairList<String, String> command = new PairList<>();
     private final Set<String> packageSets = Sets.newHashSet();
     private final Map<String, Object> config = Maps.newHashMap();
     private final MapNode nodeBase;
     private final File file;
 
-    public ConfigBeanJson5(String fileName, IPineappleConfig pineappleConfig) {
+    public ConfigBeanV2(String fileName) {
         MapNode nodeBase1;
-        File configFile = new File(Loader.instance().getConfigDir().getPath(), fileName + ".json");
+        File configFile = new File(Loader.instance().getConfigDir().getPath(), fileName + ".json5");
 
         try {
             nodeBase1 = ConfigUtil.INITIALIZE.readFromJson(configFile);
@@ -37,6 +37,10 @@ public class ConfigBeanJson5 {
         // Lazy setting.
         this.nodeBase = nodeBase1;
         this.file = configFile;
+
+        if (this instanceof IPineappleConfig) {
+            ConfigUtil.INITIALIZE.configs.put(fileName, (IPineappleConfig) this);
+        }
     }
 
     public String getString(String key, String defValue) {

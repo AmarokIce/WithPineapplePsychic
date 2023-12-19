@@ -1,4 +1,4 @@
-package club.someoneice.pineapplepsychic.command;
+package club.someoneice.pineapplepsychic.api;
 
 // Will move to api.
 public interface IPineappleConfig {

@@ -4,7 +4,7 @@ import club.someoneice.json.JSON;
 import club.someoneice.json.node.JsonNode;
 import club.someoneice.json.node.MapNode;
 import club.someoneice.json.processor.JsonBuilder;
-import club.someoneice.pineapplepsychic.command.IPineappleConfig;
+import club.someoneice.pineapplepsychic.api.IPineappleConfig;
 import com.google.common.collect.Maps;
 import cpw.mods.fml.common.Loader;
 
@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
+@Deprecated
 @SuppressWarnings({"unchecked", "unused"})
 public class ConfigBeanJson {
     private final Map<String, Object> config = Maps.newHashMap();
