@@ -19,34 +19,18 @@ public class ConfigUtil {
     public Map<String, IPineappleConfig> configs = Maps.newHashMap();
 
     public MapNode readFromJson(File file) throws IOException {
-        if (!file.exists() || !file.isFile()) {
-            file.createNewFile();
-        }
-
-        if (file.canRead()) {
+        if (!file.exists() || !file.isFile()) file.createNewFile();
+        else if (file.canRead()) {
             JsonNode<?> node = JSON.json5.parse(file);
-            if (node.getType() == JsonNode.NodeType.Map) {
-                return (MapNode) node;
-            }
+            if (node.getType() == JsonNode.NodeType.Null) return new MapNode();
+            if (node.getType() == JsonNode.NodeType.Map) return (MapNode) node;
         }
 
         return new MapNode();
     }
 
     public void writeToJson(File file, String str) throws IOException {
-        if (!file.exists() || !file.isFile()) {
-            file.createNewFile();
-        }
-
-        if (file.canWrite()) Files.write(str.getBytes(), file);
-    }
-
-    public void writeToJson5(File file, String str) throws IOException {
-        if (!file.exists() || !file.isFile()) {
-            file.createNewFile();
-        }
-
-        Json5Builder builder = new Json5Builder();
+        if (!file.exists() || !file.isFile()) file.createNewFile();
         if (file.canWrite()) Files.write(str.getBytes(), file);
     }
 }
