@@ -1,26 +1,18 @@
 package club.someoneice.pineapplepsychic.config;
 
 import club.someoneice.json.JSON;
-import club.someoneice.json.Pair;
-import club.someoneice.json.PairList;
 import club.someoneice.json.node.JsonNode;
 import club.someoneice.json.node.MapNode;
 import club.someoneice.json.processor.Json5Builder;
+import club.someoneice.pineapplepsychic.PineappleMain;
 import club.someoneice.pineapplepsychic.api.IPineappleConfig;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import cpw.mods.fml.common.Loader;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
-import java.util.Set;
 
 @SuppressWarnings({"unchecked", "unused"})
 public class ConfigBeanV2 {
-    private final PairList<String, String> command = new PairList<>();
-    private final Set<String> packageSets = Sets.newHashSet();
-    private final Map<String, Object> config = Maps.newHashMap();
     private final MapNode nodeBase;
     private final File file;
 
@@ -84,50 +76,26 @@ public class ConfigBeanV2 {
         return getBeanWithPackage(key, defValue, pack);
     }
 
-    public void addNote(String note) {
-        command.put("note", note);
-    }
+    // public void addNote(String note) {
+    //     beanBase.addNote(note);
+    // }
 
-    public void addEnter() {
-        command.put("enter", "enter");
-    }
+    // public void addEnter() {
+    //     beanBase.enterLine();
+    // }
 
     public void build() {
         Json5Builder builder = new Json5Builder();
-        Json5Builder.ObjectBean bean = builder.getObjectBean();
+        Json5Builder.ObjectBean beanBase = builder.getObjectBean();
+        nodeBase.getObj().forEach(beanBase::put);
 
-        for (Pair<String, String> it : command.asList()) {
-            if (it.getKey().equals("put")) {
-                bean.put(it.getValue(), new JsonNode<>(config.get(it.getValue())));
-            } else if (it.getKey().equals("map")) {
-                bean.put(it.getValue(), mapToNode((Map<String, Object>) config.get(it.getValue())));
-            } else if (it.getKey().equals("note")) {
-                bean.enterLine();
-                bean.addNote(it.getValue());
-            } else if (it.getKey().equals("enter")) {
-                bean.enterLine();
-            }
-        }
-
-        builder.put(bean);
+        builder.put(beanBase);
         String str = builder.build();
-
         try {
             ConfigUtil.INITIALIZE.writeToJson(this.file, str);
         } catch (IOException e) {
-            e.printStackTrace();
+            PineappleMain.LOGGER.error(e);
         }
-    }
-
-    private MapNode mapToNode(Map<String, ?> map) {
-        MapNode node = new MapNode();
-        map.forEach((key, value) -> {
-            if (value instanceof Map) {
-                node.put(key, mapToNode((Map<String, ?>) value));
-            } else node.put(key, new club.someoneice.json.node.JsonNode<>(value));
-        });
-
-        return node;
     }
 
     private <T> T getBean(String key, T defValue) {
@@ -136,33 +104,26 @@ public class ConfigBeanV2 {
             value = (T) nodeBase.get(key).getObj();
         } else value = defValue;
 
-        config.put(key, value);
-        command.put("put", key);
+        nodeBase.put(key, new JsonNode<>(value));
         return value;
     }
 
     private  <T> T getBeanWithPackage(String key, T defValue, String packName) {
         T value;
-
+        MapNode node;
         if (nodeBase.has(packName)) {
-            MapNode node = JSON.json.tryPullObjectOrEmpty(nodeBase.get(packName));
+            node = JSON.json.tryPullObjectOrEmpty(nodeBase.get(packName));
             if (node.has(key)) {
                 value = (T) node.get(key).getObj();
             } else value = defValue;
         } else {
+            node = new MapNode();
             value = defValue;
         }
 
-        Map<String, Object> objectMap;
-        if (config.containsKey(packName)) {
-            objectMap = (Map<String, Object>) config.get(packName);
-        } else {
-            objectMap = Maps.newHashMap();
-        }
+        node.put(key, new JsonNode<>(value));
+        nodeBase.put(packName, node);
 
-        objectMap.put(key, value);
-        config.put(key, objectMap);
-        if (!packageSets.contains(packName)) command.put("map", packName);
         return value;
     }
 }

@@ -4,6 +4,7 @@ import club.someoneice.json.JSON;
 import club.someoneice.json.node.JsonNode;
 import club.someoneice.json.node.MapNode;
 import club.someoneice.json.processor.JsonBuilder;
+import club.someoneice.pineapplepsychic.PineappleMain;
 import club.someoneice.pineapplepsychic.api.IPineappleConfig;
 import com.google.common.collect.Maps;
 import cpw.mods.fml.common.Loader;
@@ -79,7 +80,7 @@ public class ConfigBeanJson {
         try {
             ConfigUtil.INITIALIZE.writeToJson(this.file, JsonBuilder.prettyPrint(mapToNode(config)));
         } catch (IOException e) {
-            e.printStackTrace();
+            PineappleMain.LOGGER.error(e);
         }
     }
 

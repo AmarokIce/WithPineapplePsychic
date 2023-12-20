@@ -1,5 +1,6 @@
 package club.someoneice.pineapplepsychic.config;
 
+import club.someoneice.pineapplepsychic.PineappleMain;
 import club.someoneice.pineapplepsychic.api.IPineappleConfig;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
@@ -15,6 +16,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Deprecated
+@SuppressWarnings("unchecked, unused")
 public class ConfigBean {
     private final JsonHelper JSON_BEAN;
     private final Map<String, Object> CONFIG_MAP;
@@ -261,7 +263,7 @@ public class ConfigBean {
                     file.createNewFile();
                     this.file = file;
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    PineappleMain.LOGGER.error(e);
                 }
             }
         }
@@ -277,7 +279,7 @@ public class ConfigBean {
                 Map<String, Object> map = gson.fromJson(text, new TypeToken<Map<String, Object>>() {}.getType());
                 if (map != null) return map;
             } catch (IOException e) {
-                e.printStackTrace();
+                PineappleMain.LOGGER.error(e);
             }
 
             return new HashMap<>();
@@ -290,7 +292,7 @@ public class ConfigBean {
                 outputStream.write(cfg.getBytes());
                 outputStream.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                PineappleMain.LOGGER.error(e);
             }
         }
     }

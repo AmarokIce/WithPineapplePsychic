@@ -31,6 +31,16 @@ public class ConfigUtil {
 
     public void writeToJson(File file, String str) throws IOException {
         if (!file.exists() || !file.isFile()) file.createNewFile();
-        if (file.canWrite()) Files.write(str.getBytes(), file);
+        Files.write(str.getBytes(), file);
+
+    }
+
+    private final Json5Builder builder = new Json5Builder();
+    public Json5Builder.ObjectBean getObjectBean() {
+        return builder.getObjectBean();
+    }
+
+    public Json5Builder.ArrayBean getArrayBean() {
+        return builder.getArrayBean();
     }
 }

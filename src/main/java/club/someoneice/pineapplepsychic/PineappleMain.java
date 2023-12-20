@@ -34,6 +34,8 @@ public class PineappleMain {
     }
 
     public static class PineappleConfig extends ConfigBeanV2 implements IPineappleConfig {
+        public static boolean testBoolean = false;
+
         public PineappleConfig() {
             super("pineapple_psychic");
             init();
@@ -41,6 +43,9 @@ public class PineappleMain {
 
         @Override
         public void init() {
+            testBoolean = this.getBoolean("testBooleanConfig", testBoolean);
+
+            this.build();
         }
     }
 }
