@@ -68,7 +68,7 @@ repositories {
 }
 
 dependencies {
-    includeCompile 'net.shadew.json:json-0.4'
+    // includeCompile 'net.shadew.json:json-0.4'
     includeCompile 'club.someoneice.json:amarok-json-for-java:1.4.3'
 }
 

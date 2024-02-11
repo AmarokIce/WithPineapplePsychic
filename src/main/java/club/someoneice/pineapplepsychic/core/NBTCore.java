@@ -12,8 +12,16 @@ public class NBTCore {
     private static final String NBTPath = System.getProperty("user.dir") + File.separator +"NBTFile";
 
     public static void cmdWriteToNBT(EntityPlayer player) {
-        new NBTHelper(player).run();
+        try {
+            NBTTagCompound tag = new NBTTagCompound();
+            player.writeToNBT(tag);
+            File output = new File(NBTPath, player.getDisplayName() + ".gzip");
 
+            if (!output.exists() && !output.getParentFile().isDirectory()) output.getParentFile().mkdirs();
+            if (!output.isFile()) output.createNewFile();
+
+            CompressedStreamTools.writeCompressed(tag, Files.newOutputStream(output.toPath()));
+        } catch (IOException ignored) {}
     }
 
     public static void cmdReadFromNBT(EntityPlayer player, PlayerVec pos) throws IOException {
@@ -48,30 +56,6 @@ public class NBTCore {
         public PlayerVec(Vec3 vec3, int DIMId) {
             this.playerPos = vec3;
             this.DIMId = DIMId;
-        }
-    }
-
-    static class NBTHelper extends Thread {
-        private EntityPlayer player;
-
-        NBTHelper(EntityPlayer player) {
-            this.player = player;
-        }
-
-        @Override
-        public void run() {
-            try {
-                NBTTagCompound tag = new NBTTagCompound();
-                player.writeToNBT(tag);
-                File output = new File(NBTPath, player.getDisplayName() + ".gzip");
-
-                if (!output.exists() && !output.getParentFile().isDirectory()) output.getParentFile().mkdirs();
-                if (!output.isFile()) output.createNewFile();
-
-                CompressedStreamTools.writeCompressed(tag, Files.newOutputStream(output.toPath()));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 }

@@ -35,12 +35,11 @@ public class ConfigUtil {
 
     }
 
-    private final Json5Builder builder = new Json5Builder();
     public Json5Builder.ObjectBean getObjectBean() {
-        return builder.getObjectBean();
+        return new Json5Builder.ObjectBean();
     }
 
     public Json5Builder.ArrayBean getArrayBean() {
-        return builder.getArrayBean();
+        return new Json5Builder.ArrayBean();
     }
 }
