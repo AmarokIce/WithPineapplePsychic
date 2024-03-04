@@ -1,5 +1,6 @@
 package club.someoneice.pineapplepsychic.util;
 
+import club.someoneice.json.JSON;
 import club.someoneice.pineapplepsychic.PineappleMain;
 import net.minecraft.command.NumberInvalidException;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,7 +10,9 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 
 public class Util {
-    public Item getItemByText(String str) {
+    public static final JSON JSON_BEAN = JSON.json5;
+
+    public static Item getItemByText(String str) {
         Item item = (Item) Item.itemRegistry.getObject(str);
 
         if (item == null) {

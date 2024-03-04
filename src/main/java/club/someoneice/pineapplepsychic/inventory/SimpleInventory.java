@@ -39,11 +39,18 @@ public class SimpleInventory implements IInventory {
 
     public NBTTagCompound write() {
         NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setInteger("inv_size", this.size);
         for (int i = 0; i < this.size; i ++) {
             if (this.inventory[i] != null) nbt.setTag(Integer.toString(i), this.inventory[i].writeToNBT(new NBTTagCompound()));
         }
 
         return nbt;
+    }
+
+    public static SimpleInventory createAndLoadFromNBT(NBTTagCompound nbt) {
+        SimpleInventory simpleInventory = new SimpleInventory(nbt.getInteger("inv_size"));
+        simpleInventory.load(nbt);
+        return simpleInventory;
     }
 
     @Override

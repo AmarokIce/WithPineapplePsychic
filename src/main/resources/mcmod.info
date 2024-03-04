@@ -1,16 +1,16 @@
 [
-{
-  "modid": "pineapple_psychic",
-  "name": "PineapplePsychic",
-  "description": "PineapplePsychic",
-  "version": "1.4.1",
-  "mcversion": "${mcversion}",
-  "url": "",
-  "updateUrl": "",
-  "authorList": ["Someoneice"],
-  "credits": "",
-  "logoFile": "",
-  "screenshots": [],
-  "dependencies": []
-}
+    {
+      "modid": "${modid}",
+      "name": "${modname}",
+      "description": "${moddescription}",
+      "version": "${modversion}",
+      "mcversion": "${mcversion}",
+      "url": "${url}",
+      "updateUrl": "",
+      "authorList": ${authorList},
+      "credits": ${authorList},
+      "logoFile": "${logo}",
+      "screenshots": [],
+      "dependencies": ${dependencies}
+    }
 ]

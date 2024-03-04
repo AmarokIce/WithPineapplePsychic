@@ -1,4 +1,4 @@
-package club.someoneice.pineapplepsychic.command;
+package club.someoneice.pineapplepsychic.common.command;
 
 import club.someoneice.pineapplepsychic.config.ConfigUtil;
 import net.minecraft.command.CommandBase;
