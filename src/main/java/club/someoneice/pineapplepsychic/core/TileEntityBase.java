@@ -12,6 +12,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,6 +20,11 @@ import java.util.List;
 @SuppressWarnings("unchecked")
 public abstract class TileEntityBase extends TileEntity {
     public TileEntityBase() {}
+
+    public TileEntityBase(World world, int meta) {
+        this.setWorldObj(world);
+        this.blockMetadata = meta;
+    }
 
     abstract public void load(NBTTagCompound nbt);
     abstract public void save(NBTTagCompound nbt);

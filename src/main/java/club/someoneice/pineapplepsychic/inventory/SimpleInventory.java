@@ -1,6 +1,5 @@
 package club.someoneice.pineapplepsychic.inventory;
 
-import com.google.common.annotations.Beta;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -9,7 +8,6 @@ import net.minecraft.tileentity.TileEntity;
 
 import javax.annotation.Nullable;
 
-@Beta
 public class SimpleInventory implements IInventory {
     private final String name;
     private final int size;
@@ -70,7 +68,7 @@ public class SimpleInventory implements IInventory {
         ItemStack item = this.inventory[slot];
         ItemStack out = item.copy();
         if (item.stackSize < size) {
-            item.stackSize = 0;
+            this.inventory[slot] = null;
             return out;
         }
 
@@ -117,9 +115,21 @@ public class SimpleInventory implements IInventory {
     }
 
     @Override
-    public void openInventory() {}
+    public void openInventory() {
+        checkAndCleanNullData();
+    }
+
     @Override
-    public void closeInventory() {}
+    public void closeInventory() {
+        checkAndCleanNullData();
+    }
+
+    private void checkAndCleanNullData() {
+        for (int i = 0; i < this.inventory.length; i++) {
+            ItemStack item = this.inventory[i];
+            if (item.stackSize == 0) this.inventory[i] = null;
+        }
+    }
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack item) {

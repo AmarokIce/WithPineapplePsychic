@@ -7,7 +7,7 @@ buildscript {
         }
         maven {
             name = "forge"
-            url = "https://files.minecraftforge.net/maven"
+            url = "https://maven.minecraftforge.net/"
         }
         maven {
             name = "sonatype"
@@ -71,7 +71,7 @@ dependencies {
     // includeCompile 'net.shadew.json:json-0.4'
 
     includeCompile 'club.someoneice.json:amarok-json-for-java:1.4.4'
-    implementation "club.someoneice.togocup.pineapple_tag:pineapple-tag:1.4"
+    // implementation "club.someoneice.togocup.pineapple_tag:pineapple-tag:1.4"
 
     if (debugWithM3.toBoolean()) {
         runtimeOnly "maven.modrinth:notenoughitems-unofficial:2.5.17-GTNH"
