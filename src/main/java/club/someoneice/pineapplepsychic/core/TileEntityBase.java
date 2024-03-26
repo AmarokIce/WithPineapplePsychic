@@ -3,7 +3,6 @@ package club.someoneice.pineapplepsychic.core;
 import club.someoneice.pineapplepsychic.PineappleMain;
 import club.someoneice.pineapplepsychic.api.NBTTag;
 import club.someoneice.pineapplepsychic.inventory.SimpleInventory;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -17,7 +16,7 @@ import net.minecraft.world.World;
 import java.util.Arrays;
 import java.util.List;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("unchecked, unused")
 public abstract class TileEntityBase extends TileEntity {
     public TileEntityBase() {}
 
@@ -86,9 +85,8 @@ public abstract class TileEntityBase extends TileEntity {
     public void markDirty() {
         super.markDirty();
         if (worldObj.isRemote) return;
-        ((List<EntityPlayer>) this.worldObj.playerEntities).forEach(it -> {
-            ((EntityPlayerMP) it).playerNetServerHandler.sendPacket(this.getDescriptionPacket());
-        });
+        ((List<EntityPlayer>) this.worldObj.playerEntities).forEach(it ->
+                ((EntityPlayerMP) it).playerNetServerHandler.sendPacket(this.getDescriptionPacket()));
     }
 
     @Override

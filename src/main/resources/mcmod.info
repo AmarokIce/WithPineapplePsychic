@@ -11,6 +11,6 @@
       "credits": ${authorList},
       "logoFile": "${logo}",
       "screenshots": [],
-      "dependencies": ${dependencies}
+      "dependencies": []
     }
 ]

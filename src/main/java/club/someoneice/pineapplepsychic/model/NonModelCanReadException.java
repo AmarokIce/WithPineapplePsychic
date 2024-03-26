@@ -5,6 +5,7 @@ package club.someoneice.pineapplepsychic.model;
  * Throw this out, Tell the user "It an Illegal State Model!".
  */
 public class NonModelCanReadException extends IllegalArgumentException {
+
     public NonModelCanReadException() {
         super();
     }

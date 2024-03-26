@@ -1,5 +1,6 @@
 package club.someoneice.pineapplepsychic.model;
 
+/*  TODO
 import club.someoneice.json.Pair;
 import club.someoneice.json.node.ArrayNode;
 import club.someoneice.json.node.JsonNode;
@@ -15,6 +16,8 @@ import java.util.Map;
 
 import static club.someoneice.pineapplepsychic.util.Util.JSON_BEAN;
 
+
+@SuppressWarnings("all")
 public final class ModelBuffered {
     private final Pair<Integer, Integer> size;
     private final Map<String, ResourceLocation> textures;
@@ -65,7 +68,7 @@ public final class ModelBuffered {
         }
 
         private double pullDouble(JsonNode<?> node) {
-            return (double) node.getObj();
+            return (double) node.asTypeNode().getObj();
         }
     }
 
@@ -73,3 +76,4 @@ public final class ModelBuffered {
         throw new NonModelCanReadException(String.format("Cannot parse JsonModel in file : %s !", name));
     }
 }
+*/
