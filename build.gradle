@@ -130,3 +130,14 @@ allprojects {
         }
     }
 }
+
+publishing {
+    repositories {
+    }
+
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
+    }
+}

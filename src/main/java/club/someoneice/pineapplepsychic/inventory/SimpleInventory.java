@@ -127,7 +127,7 @@ public class SimpleInventory implements IInventory {
     private void checkAndCleanNullData() {
         for (int i = 0; i < this.inventory.length; i++) {
             ItemStack item = this.inventory[i];
-            if (item.stackSize == 0) this.inventory[i] = null;
+            if (item.stackSize <= 0) this.inventory[i] = null;
         }
     }
 
