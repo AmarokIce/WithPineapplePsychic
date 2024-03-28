@@ -29,7 +29,7 @@ import java.util.zip.ZipInputStream;
 public class PineappleMain {
     public static final String MODID = "pineapple_psychic";
     public static final String NAME = "Pineapple Psychic";
-    public static final String VERSION = "1.6";
+    public static final String VERSION = "@VERSION@";
     public static final Logger LOGGER = LogManager.getLogger("[Pineapple Psychic]");
 
     @Mod.EventHandler

@@ -67,7 +67,7 @@ public class SimpleInventory implements IInventory {
         if (slot >= this.size) return null;
         ItemStack item = this.inventory[slot];
         ItemStack out = item.copy();
-        if (item.stackSize < size) {
+        if (item.stackSize <= size) {
             this.inventory[slot] = null;
             return out;
         }
@@ -115,18 +115,15 @@ public class SimpleInventory implements IInventory {
     }
 
     @Override
-    public void openInventory() {
-        checkAndCleanNullData();
-    }
+    public void openInventory() {}
 
     @Override
-    public void closeInventory() {
-        checkAndCleanNullData();
-    }
+    public void closeInventory() {}
 
-    private void checkAndCleanNullData() {
+    public void checkAndCleanNullData() {
         for (int i = 0; i < this.inventory.length; i++) {
             ItemStack item = this.inventory[i];
+            if (item == null) return;
             if (item.stackSize <= 0) this.inventory[i] = null;
         }
     }
