@@ -1,5 +1,6 @@
 package club.someoneice.pineapplepsychic.util;
 
+@SuppressWarnings("unused")
 public final class ObjectUtil {
     private ObjectUtil() {}
 

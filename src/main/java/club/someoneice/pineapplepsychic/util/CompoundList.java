@@ -11,6 +11,7 @@ import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+@Deprecated
 public class CompoundList {
     private final List<ItemStack> baseList;
 

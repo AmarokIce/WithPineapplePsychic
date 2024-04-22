@@ -1,5 +1,6 @@
 package club.someoneice.pineapplepsychic.inventory;
 
+import club.someoneice.pineapplepsychic.util.ObjectUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -106,7 +107,7 @@ public class SimpleInventory implements IInventory {
 
     @Override
     public void markDirty() {
-        if (this.tile != null) tile.markDirty();
+        ObjectUtil.objectLet(this.tile, TileEntity::markDirty);
     }
 
     @Override
