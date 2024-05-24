@@ -1,6 +1,7 @@
 package club.someoneice.pineapplepsychic.config;
 
 import club.someoneice.json.JSON;
+import club.someoneice.json.node.ArrayNode;
 import club.someoneice.json.node.JsonNode;
 import club.someoneice.json.node.MapNode;
 import club.someoneice.json.processor.Json5Builder;
@@ -11,6 +12,8 @@ import cpw.mods.fml.common.Loader;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 @SuppressWarnings({"unchecked", "unused"})
@@ -18,6 +21,7 @@ public class ConfigBeanV2 {
     private Json5Builder.ObjectBean mapBean = ConfigUtil.INITIALIZE.getObjectBean();
     private final MapNode nodeBase;
     private final Map<String, Json5Builder.ObjectBean> nodeMapping = Maps.newHashMap();
+    private final JSON json = JSON.json5;
     private final File file;
 
     public ConfigBeanV2(String fileName) {
@@ -79,6 +83,14 @@ public class ConfigBeanV2 {
         return getBean(key, defValue);
     }
 
+    public ArrayNode getArray(String key, ArrayList<JsonNode<?>> defValue) {
+        return getBean(key, new ArrayNode(defValue));
+    }
+
+    public MapNode getMap(String key, HashMap<String, JsonNode<?>> defValue) {
+        return getBean(key, new MapNode(defValue));
+    }
+
 
     public String getString(String key, String defValue, String pack) {
         return getBeanWithPackage(key, defValue, pack);
@@ -135,13 +147,14 @@ public class ConfigBeanV2 {
     }
 
     private <T> T getBean(String key, T defValue) {
-        T value;
-        if (nodeBase.has(key)) {
-            value = (T) nodeBase.get(key).getObj();
-        } else value = defValue;
+        JsonNode<?> value = nodeBase.get(key);
 
-        mapBean.put(key, new JsonNode<>(value));
-        return value;
+        value = value == null ? new JsonNode<>(defValue) : value;
+        if (defValue instanceof ArrayNode) value = json.tryPullArrayOrEmpty(value);
+        else if (defValue instanceof MapNode) value = json.tryPullObjectOrEmpty(value);
+
+        mapBean.put(key, value);
+        return (T) value.getObj();
     }
 
     private  <T> T getBeanWithPackage(String key, T defValue, String packName) {
