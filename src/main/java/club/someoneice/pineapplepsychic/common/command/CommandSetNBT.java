@@ -6,7 +6,6 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.util.Vec3;
 
 import java.io.IOException;
-import java.util.Objects;
 
 
 public class CommandSetNBT extends CommandBase {
@@ -23,14 +22,21 @@ public class CommandSetNBT extends CommandBase {
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
         try {
-            if (Objects.equals(args[0], "set"))
-                NBTCore.cmdWriteToNBT(getPlayer(sender, args[1]));
-            else if (Objects.equals(args[0], "read"))
-                NBTCore.cmdReadFromNBT(getPlayer(sender, args[1]), new NBTCore.PlayerVec(Vec3.createVectorHelper(sender.getPlayerCoordinates().posX, sender.getPlayerCoordinates().posY, sender.getPlayerCoordinates().posZ), sender.getEntityWorld().provider.dimensionId));
-            else if (Objects.equals(args[0], "setself"))
-                NBTCore.cmdWriteToNBT(getCommandSenderAsPlayer(sender));
-            else if (Objects.equals(args[0], "readself"))
-                NBTCore.cmdReadFromNBT(getCommandSenderAsPlayer(sender), new NBTCore.PlayerVec(Vec3.createVectorHelper(sender.getPlayerCoordinates().posX, sender.getPlayerCoordinates().posY, sender.getPlayerCoordinates().posZ), sender.getEntityWorld().provider.dimensionId));
+            String input = args[0];
+            switch (input) {
+                case "set":
+                    NBTCore.cmdWriteToNBT(getPlayer(sender, args[1]));
+                    break;
+                case "read":
+                    NBTCore.cmdReadFromNBT(getPlayer(sender, args[1]), new NBTCore.PlayerVec(Vec3.createVectorHelper(sender.getPlayerCoordinates().posX, sender.getPlayerCoordinates().posY, sender.getPlayerCoordinates().posZ), sender.getEntityWorld().provider.dimensionId));
+                    break;
+                case "setself":
+                    NBTCore.cmdWriteToNBT(getCommandSenderAsPlayer(sender));
+                    break;
+                case "readself":
+                    NBTCore.cmdReadFromNBT(getCommandSenderAsPlayer(sender), new NBTCore.PlayerVec(Vec3.createVectorHelper(sender.getPlayerCoordinates().posX, sender.getPlayerCoordinates().posY, sender.getPlayerCoordinates().posZ), sender.getEntityWorld().provider.dimensionId));
+                    break;
+            }
         } catch (IOException e) {
             throw new RuntimeException("无法找到目标或目标的NBT文件. ");
         }
