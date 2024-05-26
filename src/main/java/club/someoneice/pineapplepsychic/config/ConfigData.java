@@ -12,13 +12,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-public class ConfigUtil {
-    private ConfigUtil() {}
+public final class ConfigData {
+    private ConfigData() {}
 
-    public static final ConfigUtil INITIALIZE = new ConfigUtil();
+    public static final ConfigData INITIALIZE = new ConfigData();
     public Map<String, IPineappleConfig> configs = Maps.newHashMap();
 
-    public MapNode readFromJson(File file) throws IOException {
+    MapNode readFromJson(File file) throws IOException {
         if (!file.exists() || !file.isFile()) file.createNewFile();
         else if (file.canRead()) {
             JsonNode<?> node = JSON.json5.parse(file);
@@ -29,17 +29,17 @@ public class ConfigUtil {
         return new MapNode();
     }
 
-    public void writeToJson(File file, String str) throws IOException {
+    void writeToJson(File file, String str) throws IOException {
         if (!file.exists() || !file.isFile()) file.createNewFile();
         Files.write(str.getBytes(), file);
 
     }
 
-    public Json5Builder.ObjectBean getObjectBean() {
+    Json5Builder.ObjectBean getObjectBean() {
         return new Json5Builder.ObjectBean();
     }
 
-    public Json5Builder.ArrayBean getArrayBean() {
+    Json5Builder.ArrayBean getArrayBean() {
         return new Json5Builder.ArrayBean();
     }
 }

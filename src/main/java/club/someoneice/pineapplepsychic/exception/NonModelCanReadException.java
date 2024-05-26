@@ -1,4 +1,4 @@
-package club.someoneice.pineapplepsychic.model;
+package club.someoneice.pineapplepsychic.exception;
 
 /**
  * Is that a exception model json? Or the coder call the model in a wrong time?

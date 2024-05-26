@@ -2,7 +2,8 @@ package club.someoneice.pineapplepsychic.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class StringHelper {
+public final class StringHelper {
+    private StringHelper() {}
     public static String stringHumpToUnderline(String str) {
         String letter = "([A-Z])";
         Matcher matcher = Pattern.compile(letter).matcher(str);

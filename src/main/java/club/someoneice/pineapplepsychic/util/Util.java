@@ -19,8 +19,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class Util {
+public final class Util {
     public static final JSON JSON_BEAN = JSON.json5;
+
+    private Util() {}
 
     public static Item getItemByText(String str) {
         Item item = (Item) Item.itemRegistry.getObject(str);
@@ -47,17 +49,17 @@ public class Util {
         return item.getItem() == null;
     }
 
-    public void giveOrThrowOut(EntityPlayer player, ItemStack item) {
+    public static void giveOrThrowOut(EntityPlayer player, ItemStack item) {
         if (player.inventory.addItemStackToInventory(item)) return;
         if (player.worldObj.isRemote) return;
         player.worldObj.spawnEntityInWorld(new EntityItem(player.worldObj, player.posX, player.posY, player.posZ, item));
     }
 
-    public void itemThrowOut(World world, ChunkPosition pos, ItemStack ... item) {
-        itemThrowOut(world, pos, ObjectUtil.objectRun(Lists.newArrayList(), it -> { it.addAll(Arrays.asList(item)); }));
+    public static void itemThrowOut(World world, ChunkPosition pos, ItemStack ... item) {
+        itemThrowOut(world, pos, ObjectUtil.objectLet(Lists.newArrayList(), it -> it.addAll(Arrays.asList(item)) ));
     }
 
-    public void itemThrowOut(World world, ChunkPosition pos, List<ItemStack> item) {
+    public static void itemThrowOut(World world, ChunkPosition pos, List<ItemStack> item) {
         if (world.isRemote) return;
         item.removeIf(Objects::isNull);
         item.removeIf(Util::isFakeItemStack);
@@ -67,7 +69,7 @@ public class Util {
     }
 
     @SuppressWarnings("all")
-    public SimpleInventory getInvFromItemStack(ItemStack item, int size) {
+    public static SimpleInventory getInvFromItemStack(ItemStack item, int size) {
         SimpleInventory inventory = new SimpleInventory(size);
         if (item == null || item.getTagCompound() == null) return inventory;
         if (item.getTagCompound().hasKey("inv_data"))
@@ -76,7 +78,7 @@ public class Util {
     }
 
     @SuppressWarnings("all")
-    public void setInvFromItemStack(ItemStack item, SimpleInventory inventory) {
+    public static void setInvFromItemStack(ItemStack item, SimpleInventory inventory) {
         if (item == null) return;
         if (item.getTagCompound() == null) item.stackTagCompound = new NBTTagCompound();
         item.getTagCompound().setTag("inv_data", inventory.write());

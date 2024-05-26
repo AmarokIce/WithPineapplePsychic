@@ -22,8 +22,11 @@ public class PineappleRegister {
     }
 
     public static IPineappleCommand hasCommand(String str) {
-        return serverCommands.stream().filter(it -> it.getCommandName().equals(str) || it.getCommandAliases().contains(str))
-                .findFirst().orElse(clientCommands.stream().filter(it -> it.getCommandName().equals(str) || it.getCommandAliases().contains(str))
-                        .findFirst().orElse(null));
+        return serverCommands.stream()
+                .filter(it -> it.getCommandName().equals(str) || it.getCommandAliases().contains(str))
+                .findFirst()
+                .orElse(clientCommands.stream().filter(it -> it.getCommandName().equals(str) || it.getCommandAliases().contains(str))
+                        .findFirst()
+                        .orElse(null));
     }
 }

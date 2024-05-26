@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 public final class MultiBlock {
+    private MultiBlock() {}
+
     public static final MultiBlock INITIALIZE = new MultiBlock();
     public boolean checkMultiBlock(Map<Integer, List<Block>> maps, EntityPlayer player, World world, ChunkCoordinates basePos, int ox, int oz, ForgeDirection face, Block target, int maxY) {
         if (maps.size() < maxY) return false;

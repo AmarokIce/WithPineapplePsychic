@@ -18,7 +18,7 @@ import java.util.Map;
 
 @SuppressWarnings({"unchecked", "unused"})
 public class ConfigBeanV2 {
-    private Json5Builder.ObjectBean mapBean = ConfigUtil.INITIALIZE.getObjectBean();
+    private Json5Builder.ObjectBean mapBean = ConfigData.INITIALIZE.getObjectBean();
     private final MapNode nodeBase;
     private final Map<String, Json5Builder.ObjectBean> nodeMapping = Maps.newHashMap();
     private final JSON json = JSON.json5;
@@ -29,7 +29,7 @@ public class ConfigBeanV2 {
         File configFile = new File(Loader.instance().getConfigDir().getPath(), fileName + ".json5");
 
         try {
-            nodeBase1 = ConfigUtil.INITIALIZE.readFromJson(configFile);
+            nodeBase1 = ConfigData.INITIALIZE.readFromJson(configFile);
         } catch (IOException e) {
             nodeBase1 = new MapNode();
         }
@@ -39,7 +39,7 @@ public class ConfigBeanV2 {
         this.file = configFile;
 
         if (this instanceof IPineappleConfig) {
-            ConfigUtil.INITIALIZE.configs.put(fileName, (IPineappleConfig) this);
+            ConfigData.INITIALIZE.configs.put(fileName, (IPineappleConfig) this);
         }
     }
 
@@ -51,7 +51,7 @@ public class ConfigBeanV2 {
         MapNode nodeBase1;
 
         try {
-            nodeBase1 = ConfigUtil.INITIALIZE.readFromJson(file);
+            nodeBase1 = ConfigData.INITIALIZE.readFromJson(file);
         } catch (IOException e) {
             nodeBase1 = new MapNode();
         }
@@ -59,7 +59,7 @@ public class ConfigBeanV2 {
         this.nodeBase.getObj().clear();
         nodeBase1.getObj().forEach(nodeBase::put);
 
-        mapBean = ConfigUtil.INITIALIZE.getObjectBean();
+        mapBean = ConfigData.INITIALIZE.getObjectBean();
         nodeMapping.clear();
     }
 
@@ -121,13 +121,13 @@ public class ConfigBeanV2 {
     }
 
     public void addNote(String note, String packName) {
-        Json5Builder.ObjectBean bean = nodeMapping.getOrDefault(packName, ConfigUtil.INITIALIZE.getObjectBean());
+        Json5Builder.ObjectBean bean = nodeMapping.getOrDefault(packName, ConfigData.INITIALIZE.getObjectBean());
         bean.addNote(note);
         nodeMapping.put(packName, bean);
     }
 
     public void addEnter(String packName) {
-        Json5Builder.ObjectBean bean = nodeMapping.getOrDefault(packName, ConfigUtil.INITIALIZE.getObjectBean());
+        Json5Builder.ObjectBean bean = nodeMapping.getOrDefault(packName, ConfigData.INITIALIZE.getObjectBean());
         bean.enterLine();
         nodeMapping.put(packName, bean);
     }
@@ -140,7 +140,7 @@ public class ConfigBeanV2 {
         builder.put(mapBean);
         String str = builder.build();
         try {
-            ConfigUtil.INITIALIZE.writeToJson(this.file, str);
+            ConfigData.INITIALIZE.writeToJson(this.file, str);
         } catch (IOException e) {
             PineappleMain.LOGGER.error(e);
         }
@@ -159,7 +159,7 @@ public class ConfigBeanV2 {
 
     private  <T> T getBeanWithPackage(String key, T defValue, String packName) {
         T value;
-        Json5Builder.ObjectBean bean = nodeMapping.getOrDefault(packName, ConfigUtil.INITIALIZE.getObjectBean());
+        Json5Builder.ObjectBean bean = nodeMapping.getOrDefault(packName, ConfigData.INITIALIZE.getObjectBean());
         if (nodeBase.has(packName)) {
             MapNode node = JSON.json.tryPullObjectOrEmpty(nodeBase.get(packName));
 

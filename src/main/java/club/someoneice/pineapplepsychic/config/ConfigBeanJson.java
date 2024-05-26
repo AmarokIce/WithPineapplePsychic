@@ -25,7 +25,7 @@ public class ConfigBeanJson {
         File configFile = new File(Loader.instance().getConfigDir().getPath(), fileName + ".json");
 
         try {
-            nodeBase1 = ConfigUtil.INITIALIZE.readFromJson(configFile);
+            nodeBase1 = ConfigData.INITIALIZE.readFromJson(configFile);
         } catch (IOException e) {
             nodeBase1 = new MapNode();
         }
@@ -78,7 +78,7 @@ public class ConfigBeanJson {
 
     public void build() {
         try {
-            ConfigUtil.INITIALIZE.writeToJson(this.file, JsonBuilder.prettyPrint(mapToNode(config)));
+            ConfigData.INITIALIZE.writeToJson(this.file, JsonBuilder.prettyPrint(mapToNode(config)));
         } catch (IOException e) {
             PineappleMain.LOGGER.error(e);
         }

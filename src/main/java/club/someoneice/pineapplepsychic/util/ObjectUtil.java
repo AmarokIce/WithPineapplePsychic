@@ -9,20 +9,8 @@ public final class ObjectUtil {
         return obj;
     }
 
-    public static <T> T objectLet(T obj, CallBackWithReturnType<T> c) {
-        if (!checkNonNull(obj)) return null;
-        T any = c.run(obj);
-        if (!checkNonNull(any)) return obj;
-        else return any;
-    }
-
     public static <T> T objectRun(T obj, CallBackWithReturnType<T> c) {
         return c.run(obj);
-    }
-
-    public static <T> T objectRun(T obj, CallBackWithType<T> c) {
-        c.run(obj);
-        return obj;
     }
 
     public static <T, R> R objectDo(T obj, CallBackWithReturnAny<T, R> c) {

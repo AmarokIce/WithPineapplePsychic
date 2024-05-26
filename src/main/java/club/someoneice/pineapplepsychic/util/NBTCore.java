@@ -1,4 +1,4 @@
-package club.someoneice.pineapplepsychic.core;
+package club.someoneice.pineapplepsychic.util;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.*;
@@ -8,7 +8,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-public class NBTCore {
+public final class NBTCore {
+    private NBTCore() {}
+
     private static final String NBTPath = System.getProperty("user.dir") + File.separator +"NBTFile";
 
     public static void cmdWriteToNBT(EntityPlayer player) {

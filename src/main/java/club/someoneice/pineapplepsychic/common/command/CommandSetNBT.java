@@ -1,6 +1,6 @@
 package club.someoneice.pineapplepsychic.common.command;
 
-import club.someoneice.pineapplepsychic.core.NBTCore;
+import club.someoneice.pineapplepsychic.util.NBTCore;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.Vec3;

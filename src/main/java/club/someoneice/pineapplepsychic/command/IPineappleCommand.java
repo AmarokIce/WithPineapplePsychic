@@ -7,9 +7,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import java.util.List;
 
 public interface IPineappleCommand extends Comparable<IPineappleCommand> {
-    public String getCommandName();
+    String getCommandName();
 
-    public String getCommandUsingHelper();
+    String getCommandUsingHelper();
 
     List<String> getCommandAliases();
 

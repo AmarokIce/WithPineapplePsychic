@@ -11,12 +11,10 @@ import java.util.Map;
 import java.util.Objects;
 
 @SuppressWarnings("unused")
-public class MatchUtil {
-    public static final MatchUtil init = new MatchUtil();
-
+public final class MatchUtil {
     private MatchUtil() {}
 
-    public <T> boolean matchArray(T[] A, T[] B){
+    public static <T> boolean matchArray(T[] A, T[] B){
         if (!matchArraySizeWithoutNull(A, B)) return false;
         List<T> listA = Arrays.asList(A);
         List<T> listB = Arrays.asList(B);
@@ -34,7 +32,7 @@ public class MatchUtil {
         return listB.isEmpty();
     }
 
-    public boolean matchRecipe(final Ingredient[] recipeIn, final ItemStack[] input) {
+    public static boolean matchRecipe(final Ingredient[] recipeIn, final ItemStack[] input) {
         if (!matchArraySizeWithoutNull(recipeIn, input)) return false;
 
         List<Ingredient> listRecipe = Arrays.asList(recipeIn);
@@ -44,7 +42,7 @@ public class MatchUtil {
 
         listInput.forEach(item -> {
             List<Ingredient> list = Lists.newArrayListWithExpectedSize(5);
-            listRecipe.stream().filter(it -> this.matchStackInList(it.getObj(), item)).forEach(list::add);
+            listRecipe.stream().filter(it -> matchStackInList(it.getObj(), item)).forEach(list::add);
             listInputByIngredient.put(list.size(), list);
         });
 
@@ -60,16 +58,16 @@ public class MatchUtil {
         return listRecipe.isEmpty();
     }
 
-    public boolean matchItemStackInIngredient(Ingredient ingredient, ItemStack itemStack) {
+    public static boolean matchItemStackInIngredient(Ingredient ingredient, ItemStack itemStack) {
         if (ingredient == null || ingredient.getObj().isEmpty()) return false;
         return matchStackInList(ingredient.getObj(), itemStack);
     }
 
-    public boolean matchStackInList(List<ItemStack> array, ItemStack target) {
+    public static boolean matchStackInList(List<ItemStack> array, ItemStack target) {
         return array.stream().anyMatch(it -> Util.itemStackEquals(it, target));
     }
 
-    public boolean matchStacks(ItemStack[] A, ItemStack[] B) {
+    public static boolean matchStacks(ItemStack[] A, ItemStack[] B) {
         if (!matchArraySizeWithoutNull(A, B)) return false;
         List<ItemStack> listA = Arrays.asList(A);
         List<ItemStack> listB = Arrays.asList(B);
@@ -77,7 +75,7 @@ public class MatchUtil {
         return matchStackList(listA, listB);
     }
 
-    public boolean matchStackList(List<ItemStack> listA, List<ItemStack> listB) {
+    public static boolean matchStackList(List<ItemStack> listA, List<ItemStack> listB) {
         listA.removeIf(Objects::isNull);
         listB.removeIf(Objects::isNull);
 
@@ -92,7 +90,7 @@ public class MatchUtil {
         return listB.isEmpty();
     }
 
-    public boolean matchArraySizeWithoutNull(Object[] A, Object[] B) {
+    public static boolean matchArraySizeWithoutNull(Object[] A, Object[] B) {
         return Arrays.stream(A).filter(Objects::nonNull).count() == Arrays.stream(B).filter(Objects::nonNull).count();
     }
 }

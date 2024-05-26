@@ -13,5 +13,4 @@ public interface IPineappleConfig {
 
         return this;
     }
-
 }
