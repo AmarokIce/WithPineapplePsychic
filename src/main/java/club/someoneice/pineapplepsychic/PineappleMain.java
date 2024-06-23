@@ -63,7 +63,7 @@ public class PineappleMain {
 
     @Mod.EventHandler
     public static void onServerInitialization(FMLServerStartingEvent event) {
-        event.registerServerCommand(new CommandSetConfig());
+        // event.registerServerCommand(new CommandSetConfig());
     }
 
     public static class PineappleConfig extends ConfigBeanV2 implements IPineappleConfig {
