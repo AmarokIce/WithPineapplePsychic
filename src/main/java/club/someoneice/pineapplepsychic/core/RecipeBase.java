@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class RecipeBase implements IRecipe {
+public abstract class RecipeBase implements IRecipe {
     private int size;
     private final ItemStack itemOutput;
     private final RecipeHandler handler;
