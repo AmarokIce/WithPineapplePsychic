@@ -2,7 +2,6 @@ package club.someoneice.pineapplepsychic;
 
 import club.someoneice.pineapplepsychic.api.AutoRegistryTileEntity;
 import club.someoneice.pineapplepsychic.api.IPineappleConfig;
-import club.someoneice.pineapplepsychic.common.command.CommandSetConfig;
 import club.someoneice.pineapplepsychic.config.ConfigBeanV2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
