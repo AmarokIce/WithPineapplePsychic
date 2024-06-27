@@ -1,11 +1,16 @@
 package club.someoneice.pineapplepsychic.util.math;
 
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.ChunkPosition;
+
 import java.util.Objects;
 
+@SuppressWarnings("unused")
 public final class Vector3D {
-    public Double x;
-    public Double y;
-    public Double z;
+    public double x;
+    public double y;
+    public double z;
 
     public static final Vector3D ZERO = new Vector3D(0.0, 0.0, 0.0);
     public static final Vector3D XN = new Vector3D(-1.0, 0.0, 0.0);
@@ -15,7 +20,7 @@ public final class Vector3D {
     public static final Vector3D ZN = new Vector3D(0.0, 0.0, -1.0);
     public static final Vector3D ZP = new Vector3D(0.0, 0.0, 1.0);
 
-    public Vector3D(Double x, Double y, Double z) {
+    public Vector3D(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -66,6 +71,22 @@ public final class Vector3D {
         if (o == null || getClass() != o.getClass()) return false;
         Vector3D vector3D = (Vector3D) o;
         return Objects.equals(x, vector3D.x) && Objects.equals(y, vector3D.y) && Objects.equals(z, vector3D.z);
+    }
+
+    public static Vector3D fromPos(ChunkPosition pos) {
+        Vector3D ret = Vector3D.ZERO;
+        ret.x = pos.chunkPosX;
+        ret.y = pos.chunkPosY;
+        ret.z = pos.chunkPosZ;
+        return ret;
+    }
+
+    public ChunkPosition toPos() {
+        return new ChunkPosition(MathHelper.floor_double(this.x), MathHelper.floor_double(this.y), MathHelper.floor_double(this.z));
+    }
+
+    public AxisAlignedBB asAABB(double distance) {
+        return AxisAlignedBB.getBoundingBox(this.x - distance, this.y - distance, this.z - distance, this.x + distance, this.y + distance, this.z + distance);
     }
 
     @Override

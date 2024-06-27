@@ -1,4 +1,4 @@
-package club.someoneice.pineapplepsychic.util;
+package club.someoneice.pineapplepsychic.core;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -47,5 +47,9 @@ public class RecipeBase implements IRecipe {
 
     public interface RecipeHandler {
         boolean init(InventoryCrafting crafting, ItemStack[] items, World world, ItemStack output);
+    }
+
+    public final void registerRecipe() {
+        CraftingManager.getInstance().getRecipeList().add(this);
     }
 }

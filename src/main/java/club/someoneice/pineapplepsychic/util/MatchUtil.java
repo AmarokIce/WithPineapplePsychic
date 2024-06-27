@@ -14,12 +14,22 @@ import java.util.Objects;
 public final class MatchUtil {
     private MatchUtil() {}
 
+    /**
+     * Match two of arrays' what they hold is the same. <br />
+     * 匹配两份 Array 持有的内容是相同的。
+     *
+     * @param A The array A.
+     * @param B The array B.
+     */
     public static <T> boolean matchArray(T[] A, T[] B){
         if (!matchArraySizeWithoutNull(A, B)) return false;
         List<T> listA = Arrays.asList(A);
         List<T> listB = Arrays.asList(B);
         listA.removeIf(Objects::isNull);
         listB.removeIf(Objects::isNull);
+
+        if (listA.isEmpty() && listB.isEmpty()) return true;
+        if (listA.size() != listB.size()) return false;
 
         listA.forEach(it -> {
             for (int i = 0; i < listB.size(); i++) {
@@ -32,6 +42,13 @@ public final class MatchUtil {
         return listB.isEmpty();
     }
 
+    /**
+     * It is usually used to match recipes, checking that what is entered is the same as what the recipe requires.  <br />
+     * 通常会用于匹配食谱，检查输入的内容与食谱需求是相同的。
+     *
+     * @param recipeIn The recipe requires.
+     * @param input The input by player.
+     */
     public static boolean matchRecipe(final Ingredient[] recipeIn, final ItemStack[] input) {
         if (!matchArraySizeWithoutNull(recipeIn, input)) return false;
 
@@ -58,15 +75,27 @@ public final class MatchUtil {
         return listRecipe.isEmpty();
     }
 
+    /**
+     * Check to see if the item is included in Ingredient. <br />
+     * 检查物品是否被包含于 Ingredient。
+     */
     public static boolean matchItemStackInIngredient(Ingredient ingredient, ItemStack itemStack) {
         if (ingredient == null || ingredient.getObj().isEmpty()) return false;
         return matchStackInList(ingredient.getObj(), itemStack);
     }
 
+    /**
+     * Check to see if the item is included in List. <br />
+     * 检查物品是否被包含于 List。
+     */
     public static boolean matchStackInList(List<ItemStack> array, ItemStack target) {
         return array.stream().anyMatch(it -> Util.itemStackEquals(it, target));
     }
 
+    /**
+     * Match the Array that holds the ItemStack. <br />
+     * 匹配持有 ItemStack 的 Array。
+     */
     public static boolean matchStacks(ItemStack[] A, ItemStack[] B) {
         if (!matchArraySizeWithoutNull(A, B)) return false;
         List<ItemStack> listA = Arrays.asList(A);
@@ -75,9 +104,16 @@ public final class MatchUtil {
         return matchStackList(listA, listB);
     }
 
+    /**
+     * Match the List that holds the ItemStack. <br />
+     * 匹配持有 ItemStack 的 List。
+     */
     public static boolean matchStackList(List<ItemStack> listA, List<ItemStack> listB) {
         listA.removeIf(Objects::isNull);
         listB.removeIf(Objects::isNull);
+
+        if (listA.isEmpty() && listB.isEmpty()) return true;
+        if (listA.size() != listB.size()) return false;
 
         listA.forEach(it -> {
             for (int i = 0; i < listB.size(); i++) {
@@ -90,6 +126,9 @@ public final class MatchUtil {
         return listB.isEmpty();
     }
 
+    /**
+     * Check the Array size without Null objects.
+     */
     public static boolean matchArraySizeWithoutNull(Object[] A, Object[] B) {
         return Arrays.stream(A).filter(Objects::nonNull).count() == Arrays.stream(B).filter(Objects::nonNull).count();
     }

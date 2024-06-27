@@ -54,6 +54,5 @@ public class KeyEvent {
     public void onChatServer(ServerChatEvent event) {
         String text = event.message;
         if (!text.startsWith(">")) return;
-
     }
 }
