@@ -9,7 +9,8 @@ import net.minecraft.world.World;
 import java.util.List;
 
 public final class ChatComponentUtil {
-    private ChatComponentUtil() {}
+    private ChatComponentUtil() {
+    }
 
     public static void sendTo(EntityPlayer player, String message) {
         player.addChatComponentMessage(new ChatComponentText(message));

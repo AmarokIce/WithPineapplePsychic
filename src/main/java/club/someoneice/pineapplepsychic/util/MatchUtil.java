@@ -12,7 +12,8 @@ import java.util.Objects;
 
 @SuppressWarnings("unused")
 public final class MatchUtil {
-    private MatchUtil() {}
+    private MatchUtil() {
+    }
 
     /**
      * Match two of arrays' what they hold is the same. <br />
@@ -21,7 +22,7 @@ public final class MatchUtil {
      * @param A The array A.
      * @param B The array B.
      */
-    public static <T> boolean matchArray(T[] A, T[] B){
+    public static <T> boolean matchArray(T[] A, T[] B) {
         if (!matchArraySizeWithoutNull(A, B)) return false;
         List<T> listA = Arrays.asList(A);
         List<T> listB = Arrays.asList(B);
@@ -47,13 +48,14 @@ public final class MatchUtil {
      * 通常会用于匹配食谱，检查输入的内容与食谱需求是相同的。
      *
      * @param recipeIn The recipe requires.
-     * @param input The input by player.
+     * @param input    The input by player.
      */
     public static boolean matchRecipe(final Ingredient[] recipeIn, final ItemStack[] input) {
         if (!matchArraySizeWithoutNull(recipeIn, input)) return false;
-
         List<Ingredient> listRecipe = Arrays.asList(recipeIn);
         List<ItemStack> listInput = Arrays.asList(input);
+
+        if (listRecipe.size() != listInput.size()) return false;
 
         Map<Integer, List<Ingredient>> listInputByIngredient = Maps.newHashMap();
 
@@ -65,11 +67,12 @@ public final class MatchUtil {
 
         listInputByIngredient.keySet().stream().sorted().forEach(it -> {
             List<Ingredient> list = listInputByIngredient.get(it);
-            for (int i = 0; i < listRecipe.size(); i++) for (Ingredient ingredient : list) {
-                if (!listRecipe.get(i).equals(ingredient)) continue;
-                listRecipe.remove(i);
-                return;
-            }
+            for (int i = 0; i < listRecipe.size(); i++)
+                for (Ingredient ingredient : list) {
+                    if (!listRecipe.get(i).equals(ingredient)) continue;
+                    listRecipe.remove(i);
+                    return;
+                }
         });
 
         return listRecipe.isEmpty();
@@ -117,7 +120,9 @@ public final class MatchUtil {
 
         listA.forEach(it -> {
             for (int i = 0; i < listB.size(); i++) {
-                if (!Util.itemStackEquals(it, listB.get(i))) continue;
+                if (!Util.itemStackEquals(it, listB.get(i))) {
+                    continue;
+                }
                 listB.remove(i);
                 break;
             }

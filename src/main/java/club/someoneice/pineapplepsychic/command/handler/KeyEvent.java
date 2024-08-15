@@ -45,7 +45,8 @@ public class KeyEvent {
     @SubscribeEvent
     public void onChatClient(ClientChatReceivedEvent event) {
         String text = event.message.getUnformattedText();
-        if (!text.startsWith(">")) return;
+        if (!text.startsWith(">")) {
+        }
 
     }
 
@@ -53,6 +54,7 @@ public class KeyEvent {
     @SubscribeEvent
     public void onChatServer(ServerChatEvent event) {
         String text = event.message;
-        if (!text.startsWith(">")) return;
+        if (!text.startsWith(">")) {
+        }
     }
 }

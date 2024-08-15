@@ -6,7 +6,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkPosition;
 
 public final class PosUtil {
-    private PosUtil() {}
+    private PosUtil() {
+    }
 
     public static ChunkPosition of(int x, int y, int z) {
         return new ChunkPosition(x, y, z);

@@ -14,7 +14,7 @@ public final class EulerAngles {
     }
 
     public EulerAngles(double w, double x, double y, double z) {
-        this.roll = Math.atan2(2 * (w * x + y * z),  1 - 2 * (Math.pow(x, 2) + Math.pow(y, 2)));
+        this.roll = Math.atan2(2 * (w * x + y * z), 1 - 2 * (Math.pow(x, 2) + Math.pow(y, 2)));
 
         this.pitch = ObjectUtil.objectRun(2 * (w * y - z * x), it -> {
             if (Math.abs(it) >= 1) return Math.copySign(1.57075f, it);

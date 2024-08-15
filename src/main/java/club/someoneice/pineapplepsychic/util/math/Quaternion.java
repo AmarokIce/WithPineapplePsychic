@@ -29,7 +29,7 @@ public final class Quaternion {
     }
 
     public EulerAngles toEulerAngles() {
-        return new EulerAngles(this.w,this.x,this.y,this.z);
+        return new EulerAngles(this.w, this.x, this.y, this.z);
     }
 
     Quaternion multiplication(Quaternion target) {

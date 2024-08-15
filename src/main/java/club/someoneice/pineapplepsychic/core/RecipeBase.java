@@ -9,9 +9,9 @@ import net.minecraft.world.World;
 import java.util.List;
 
 public abstract class RecipeBase implements IRecipe {
-    private int size;
     private final ItemStack itemOutput;
     private final RecipeHandler handler;
+    private int size;
 
     @SuppressWarnings("unchecked")
     public RecipeBase(RecipeHandler handler, ItemStack output) {
@@ -24,7 +24,7 @@ public abstract class RecipeBase implements IRecipe {
     public boolean matches(InventoryCrafting inv, World world) {
         this.size = inv.getSizeInventory();
         ItemStack[] items = new ItemStack[this.size];
-        for (int i = 0; i < this.size; i ++) {
+        for (int i = 0; i < this.size; i++) {
             items[i] = inv.getStackInSlot(i);
         }
         return this.handler.init(inv, items, world, this.itemOutput);
@@ -45,11 +45,11 @@ public abstract class RecipeBase implements IRecipe {
         return this.itemOutput;
     }
 
-    public interface RecipeHandler {
-        boolean init(InventoryCrafting crafting, ItemStack[] items, World world, ItemStack output);
-    }
-
     public final void registerRecipe() {
         CraftingManager.getInstance().getRecipeList().add(this);
+    }
+
+    public interface RecipeHandler {
+        boolean init(InventoryCrafting crafting, ItemStack[] items, World world, ItemStack output);
     }
 }

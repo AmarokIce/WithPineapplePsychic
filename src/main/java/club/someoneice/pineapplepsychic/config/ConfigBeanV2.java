@@ -18,11 +18,11 @@ import java.util.Map;
 
 @SuppressWarnings({"unchecked", "unused"})
 public class ConfigBeanV2 {
-    private Json5Builder.ObjectBean mapBean = ConfigData.INITIALIZE.getObjectBean();
     private final MapNode nodeBase;
     private final Map<String, Json5Builder.ObjectBean> nodeMapping = Maps.newHashMap();
     private final JSON json = JSON.json5;
     private final File file;
+    private Json5Builder.ObjectBean mapBean = ConfigData.INITIALIZE.getObjectBean();
 
     public ConfigBeanV2(String fileName) {
         MapNode nodeBase1;
@@ -157,7 +157,7 @@ public class ConfigBeanV2 {
         return (T) value.getObj();
     }
 
-    private  <T> T getBeanWithPackage(String key, T defValue, String packName) {
+    private <T> T getBeanWithPackage(String key, T defValue, String packName) {
         T value;
         Json5Builder.ObjectBean bean = nodeMapping.getOrDefault(packName, ConfigData.INITIALIZE.getObjectBean());
         if (nodeBase.has(packName)) {
@@ -169,7 +169,6 @@ public class ConfigBeanV2 {
         } else {
             value = defValue;
         }
-
 
         bean.put(key, new JsonNode<>(value));
         nodeMapping.put(packName, bean);

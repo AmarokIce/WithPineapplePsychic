@@ -9,9 +9,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 public final class NBTCore {
-    private NBTCore() {}
+    private static final String NBTPath = System.getProperty("user.dir") + File.separator + "NBTFile";
 
-    private static final String NBTPath = System.getProperty("user.dir") + File.separator +"NBTFile";
+    private NBTCore() {
+    }
 
     public static void cmdWriteToNBT(EntityPlayer player) {
         try {
@@ -19,16 +20,23 @@ public final class NBTCore {
             player.writeToNBT(tag);
             File output = new File(NBTPath, player.getDisplayName() + ".gzip");
 
-            if (!output.exists() && !output.getParentFile().isDirectory()) output.getParentFile().mkdirs();
-            if (!output.isFile()) output.createNewFile();
+            if (!output.exists() && !output.getParentFile().isDirectory()) {
+                output.getParentFile().mkdirs();
+            }
+            if (!output.isFile()) {
+                output.createNewFile();
+            }
 
             CompressedStreamTools.writeCompressed(tag, Files.newOutputStream(output.toPath()));
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+        }
     }
 
     public static void cmdReadFromNBT(EntityPlayer player, PlayerVec pos) throws IOException {
         File input = new File(NBTPath, player.getDisplayName() + ".gzip");
-        if (!input.exists() || !input.isFile()) return;
+        if (!input.exists() || !input.isFile()) {
+            return;
+        }
         NBTTagCompound tag = CompressedStreamTools.readCompressed(Files.newInputStream(input.toPath()));
         tag.setInteger("Dimension", pos.DIMId);
         tag.setTag("Pos", newDoubleNBTList(pos.playerPos.xCoord, pos.playerPos.yCoord, pos.playerPos.zCoord));
@@ -37,16 +45,20 @@ public final class NBTCore {
         player.readFromNBT(tag);
     }
 
-    private static NBTTagList newDoubleNBTList(double ... args) {
+    private static NBTTagList newDoubleNBTList(double... args) {
         NBTTagList nbttaglist = new NBTTagList();
-        for (double d1 : args) nbttaglist.appendTag(new NBTTagDouble(d1));
+        for (double d1 : args) {
+            nbttaglist.appendTag(new NBTTagDouble(d1));
+        }
 
         return nbttaglist;
     }
 
-    private static NBTTagList newFloatNBTList(float ... args) {
+    private static NBTTagList newFloatNBTList(float... args) {
         NBTTagList nbttaglist = new NBTTagList();
-        for (float f1 : args) nbttaglist.appendTag(new NBTTagFloat(f1));
+        for (float f1 : args) {
+            nbttaglist.appendTag(new NBTTagFloat(f1));
+        }
 
         return nbttaglist;
     }

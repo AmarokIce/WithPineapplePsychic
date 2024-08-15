@@ -2,7 +2,8 @@ package club.someoneice.pineapplepsychic.util;
 
 @SuppressWarnings("unused")
 public final class ObjectUtil {
-    private ObjectUtil() {}
+    private ObjectUtil() {
+    }
 
     public static <T> T objectLet(T obj, CallBackWithType<T> c) {
         if (checkNonNull(obj)) c.run(obj);

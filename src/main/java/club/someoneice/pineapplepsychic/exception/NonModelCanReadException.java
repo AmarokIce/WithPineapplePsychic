@@ -9,12 +9,15 @@ public class NonModelCanReadException extends IllegalArgumentException {
     public NonModelCanReadException() {
         super();
     }
+
     public NonModelCanReadException(String s) {
         super(s);
     }
+
     public NonModelCanReadException(String message, Throwable cause) {
         super(message, cause);
     }
+
     public NonModelCanReadException(Throwable cause) {
         super(cause);
     }

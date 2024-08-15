@@ -13,10 +13,10 @@ import java.io.IOException;
 import java.util.Map;
 
 public final class ConfigData {
-    private ConfigData() {}
-
     public static final ConfigData INITIALIZE = new ConfigData();
     public Map<String, IPineappleConfig> configs = Maps.newHashMap();
+    private ConfigData() {
+    }
 
     MapNode readFromJson(File file) throws IOException {
         if (!file.exists() || !file.isFile()) file.createNewFile();

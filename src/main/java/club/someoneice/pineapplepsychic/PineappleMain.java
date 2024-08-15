@@ -31,6 +31,7 @@ public class PineappleMain {
     public static final String NAME = "Pineapple Psychic";
     public static final String VERSION = "@VERSION@";
     public static final Logger LOGGER = LogManager.getLogger("[Pineapple Psychic]");
+    private static final ModClassLoader modClassLoader = (ModClassLoader) Loader.instance().getModClassLoader();
 
     @Mod.EventHandler
     public static void onPreInitialization(FMLPreInitializationEvent event) {
@@ -65,24 +66,6 @@ public class PineappleMain {
         // event.registerServerCommand(new CommandSetConfig());
     }
 
-    public static class PineappleConfig extends ConfigBeanV2 implements IPineappleConfig {
-        public static boolean testBoolean = false;
-
-        public PineappleConfig() {
-            super("pineapple_psychic");
-            init();
-        }
-
-        @Override
-        public void init() {
-            testBoolean = this.getBoolean("testBooleanConfig", testBoolean);
-
-            this.build();
-        }
-    }
-
-    private static final ModClassLoader modClassLoader = (ModClassLoader) Loader.instance().getModClassLoader();
-
     private static void autoRegisterTileEntity() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         ImmutableList<Object> knownLibraries = ImmutableList.builder().addAll(modClassLoader.getDefaultLibraries()).addAll(CoreModManager.getLoadedCoremods()).build();
         File[] minecraftSources = modClassLoader.getParentSources();
@@ -104,7 +87,7 @@ public class PineappleMain {
         FileInputStream fileinputstream = new FileInputStream(file);
         ZipInputStream zipinputstream = new ZipInputStream(fileinputstream);
 
-        while(true) {
+        while (true) {
             ZipEntry zipentry = zipinputstream.getNextEntry();
             if (zipentry == null) break;
 
@@ -139,7 +122,24 @@ public class PineappleMain {
                 GameRegistry.registerTileEntity((Class<? extends TileEntity>) clazz, clazz.getName());
             }
         }
-    }}
+    }
+
+    public static class PineappleConfig extends ConfigBeanV2 implements IPineappleConfig {
+        public static boolean testBoolean = false;
+
+        public PineappleConfig() {
+            super("pineapple_psychic");
+            init();
+        }
+
+        @Override
+        public void init() {
+            testBoolean = this.getBoolean("testBooleanConfig", testBoolean);
+
+            this.build();
+        }
+    }
+}
 
 
 

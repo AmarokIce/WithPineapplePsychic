@@ -1,9 +1,12 @@
 package club.someoneice.pineapplepsychic.util;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class StringHelper {
-    private StringHelper() {}
+    private StringHelper() {
+    }
+
     public static String stringHumpToUnderline(String str) {
         String letter = "([A-Z])";
         Matcher matcher = Pattern.compile(letter).matcher(str);
@@ -24,7 +27,7 @@ public final class StringHelper {
         return str;
     }
 
-    public static String stringToLowOnFirst(String str){
+    public static String stringToLowOnFirst(String str) {
         return Character.toLowerCase(str.charAt(0)) + str.substring(1);
     }
 }

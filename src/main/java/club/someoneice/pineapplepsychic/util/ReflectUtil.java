@@ -9,7 +9,8 @@ import java.lang.reflect.Field;
  */
 @Deprecated
 public final class ReflectUtil {
-    private ReflectUtil() {}
+    private ReflectUtil() {
+    }
 
     @Deprecated
     public static <T> T reflectField(Object clazz, String fieldName) throws NoSuchFieldException, IllegalAccessException {

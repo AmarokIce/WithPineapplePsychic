@@ -8,10 +8,6 @@ import java.util.Objects;
 
 @SuppressWarnings("unused")
 public final class Vector3D {
-    public double x;
-    public double y;
-    public double z;
-
     public static final Vector3D ZERO = new Vector3D(0.0, 0.0, 0.0);
     public static final Vector3D XN = new Vector3D(-1.0, 0.0, 0.0);
     public static final Vector3D XP = new Vector3D(1.0, 0.0, 0.0);
@@ -19,6 +15,9 @@ public final class Vector3D {
     public static final Vector3D YP = new Vector3D(0.0, 1.0, 0.0);
     public static final Vector3D ZN = new Vector3D(0.0, 0.0, -1.0);
     public static final Vector3D ZP = new Vector3D(0.0, 0.0, 1.0);
+    public double x;
+    public double y;
+    public double z;
 
     public Vector3D(double x, double y, double z) {
         this.x = x;
@@ -26,6 +25,13 @@ public final class Vector3D {
         this.z = z;
     }
 
+    public static Vector3D fromPos(ChunkPosition pos) {
+        Vector3D ret = Vector3D.ZERO;
+        ret.x = pos.chunkPosX;
+        ret.y = pos.chunkPosY;
+        ret.z = pos.chunkPosZ;
+        return ret;
+    }
 
     public Vector3D vectorTo(Vector3D vec3d) {
         Vector3D ret = Vector3D.ZERO;
@@ -71,14 +77,6 @@ public final class Vector3D {
         if (o == null || getClass() != o.getClass()) return false;
         Vector3D vector3D = (Vector3D) o;
         return Objects.equals(x, vector3D.x) && Objects.equals(y, vector3D.y) && Objects.equals(z, vector3D.z);
-    }
-
-    public static Vector3D fromPos(ChunkPosition pos) {
-        Vector3D ret = Vector3D.ZERO;
-        ret.x = pos.chunkPosX;
-        ret.y = pos.chunkPosY;
-        ret.z = pos.chunkPosZ;
-        return ret;
     }
 
     public ChunkPosition toPos() {

@@ -22,7 +22,8 @@ import java.util.Objects;
 public final class Util {
     public static final JSON JSON_BEAN = JSON.json5;
 
-    private Util() {}
+    private Util() {
+    }
 
     public static Item getItemByText(String str) {
         Item item = (Item) Item.itemRegistry.getObject(str);
@@ -55,8 +56,8 @@ public final class Util {
         player.worldObj.spawnEntityInWorld(new EntityItem(player.worldObj, player.posX, player.posY, player.posZ, item));
     }
 
-    public static void itemThrowOut(World world, ChunkPosition pos, ItemStack ... item) {
-        itemThrowOut(world, pos, ObjectUtil.objectLet(Lists.newArrayList(), it -> it.addAll(Arrays.asList(item)) ));
+    public static void itemThrowOut(World world, ChunkPosition pos, ItemStack... item) {
+        itemThrowOut(world, pos, ObjectUtil.objectLet(Lists.newArrayList(), it -> it.addAll(Arrays.asList(item))));
     }
 
     public static void itemThrowOut(World world, ChunkPosition pos, List<ItemStack> item) {

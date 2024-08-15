@@ -14,7 +14,9 @@ public interface IPineappleCommand extends Comparable<IPineappleCommand> {
     List<String> getCommandAliases();
 
     void processCommand(EntityPlayer sender, String[] parameterTree);
+
     int getRequiredPermissionLevel();
+
     boolean canCommandSenderUseCommand(ICommandSender sender);
 
     List<String> addTabCompletionOptions(EntityPlayerMP sender, String[] parameterTree);

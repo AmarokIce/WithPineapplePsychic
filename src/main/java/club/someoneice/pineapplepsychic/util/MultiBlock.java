@@ -11,9 +11,11 @@ import java.util.List;
 import java.util.Map;
 
 public final class MultiBlock {
-    private MultiBlock() {}
-
     public static final MultiBlock INITIALIZE = new MultiBlock();
+
+    private MultiBlock() {
+    }
+
     public boolean checkMultiBlock(Map<Integer, List<Block>> maps, EntityPlayer player, World world, ChunkCoordinates basePos, int ox, int oz, ForgeDirection face, Block target, int maxY) {
         if (maps.size() < maxY) return false;
         Processor processor = new Processor(maps);
@@ -22,19 +24,20 @@ public final class MultiBlock {
             ChunkCoordinates originPos = new ChunkCoordinates(basePos.posX + ox, basePos.posY, basePos.posZ - oz);
             for (int y = 0; y < maxY; y++) {
                 int i = 0;
-                for (int x = 0; x > -5; x--) for (int z = 0; z < 5; z++) {
-                    if (!processor.checkBlockInMap(world, new ChunkCoordinates(originPos.posX + x, originPos.posY + y, originPos.posZ + z), y, i))
-                        return false;
-                    i++;
-                }
+                for (int x = 0; x > -5; x--)
+                    for (int z = 0; z < 5; z++) {
+                        if (!processor.checkBlockInMap(world, new ChunkCoordinates(originPos.posX + x, originPos.posY + y, originPos.posZ + z), y, i))
+                            return false;
+                        i++;
+                    }
             }
 
-            for (int y = 0; y < maxY; y++) for (int x = 0; x > -5; x--) for (int z = 0; z < 5; z++) {
-                world.setBlock(originPos.posX + x, originPos.posY + y, originPos.posZ + z, Blocks.air);
-            }
-        }
-
-        else if (face == ForgeDirection.SOUTH) {
+            for (int y = 0; y < maxY; y++)
+                for (int x = 0; x > -5; x--)
+                    for (int z = 0; z < 5; z++) {
+                        world.setBlock(originPos.posX + x, originPos.posY + y, originPos.posZ + z, Blocks.air);
+                    }
+        } else if (face == ForgeDirection.SOUTH) {
             ChunkCoordinates originPos = new ChunkCoordinates(basePos.posX + oz, basePos.posY, basePos.posZ + ox);
             for (int y = 0; y < maxY; y++) {
                 int i = 0;
@@ -46,12 +49,12 @@ public final class MultiBlock {
                     }
             }
 
-            for (int y = 0; y < maxY; y++) for (int z = 0; z > -5; z--) for (int x = 0; x > -5; x--) {
-                world.setBlock(originPos.posX + x, originPos.posY + y, originPos.posZ + z, Blocks.air);
-            }
-        }
-
-        else if (face == ForgeDirection.WEST) {
+            for (int y = 0; y < maxY; y++)
+                for (int z = 0; z > -5; z--)
+                    for (int x = 0; x > -5; x--) {
+                        world.setBlock(originPos.posX + x, originPos.posY + y, originPos.posZ + z, Blocks.air);
+                    }
+        } else if (face == ForgeDirection.WEST) {
             ChunkCoordinates originPos = new ChunkCoordinates(basePos.posX - ox, basePos.posY, basePos.posZ + oz);
             for (int y = 0; y < maxY; y++) {
                 int i = 0;
@@ -63,25 +66,28 @@ public final class MultiBlock {
                     }
             }
 
-            for (int y = 0; y < maxY; y++) for (int x = 0; x < 5; x++) for (int z = 0; z > -5; z--) {
-                world.setBlock(originPos.posX + x, originPos.posY + y, originPos.posZ + z, Blocks.air);
-            }
-        }
-
-        else if (face == ForgeDirection.NORTH) {
+            for (int y = 0; y < maxY; y++)
+                for (int x = 0; x < 5; x++)
+                    for (int z = 0; z > -5; z--) {
+                        world.setBlock(originPos.posX + x, originPos.posY + y, originPos.posZ + z, Blocks.air);
+                    }
+        } else if (face == ForgeDirection.NORTH) {
             ChunkCoordinates originPos = new ChunkCoordinates(basePos.posX - oz, basePos.posY, basePos.posZ - ox);
             for (int y = 0; y < maxY; y++) {
                 int i = 0;
-                for (int z = 0; z < 5; z++) for (int x = 0; x < 5; x++) {
-                    if (!processor.checkBlockInMap(world, new ChunkCoordinates(originPos.posX + x, originPos.posY + y, originPos.posZ + z), y, i))
-                        return false;
-                    i++;
-                }
+                for (int z = 0; z < 5; z++)
+                    for (int x = 0; x < 5; x++) {
+                        if (!processor.checkBlockInMap(world, new ChunkCoordinates(originPos.posX + x, originPos.posY + y, originPos.posZ + z), y, i))
+                            return false;
+                        i++;
+                    }
             }
 
-            for (int y = 0; y < maxY; y++) for (int z = 0; z < 5; z++) for (int x = 0; x < 5; x++) {
-                world.setBlock(originPos.posX + x, originPos.posY + y, originPos.posZ + z, Blocks.air);
-            }
+            for (int y = 0; y < maxY; y++)
+                for (int z = 0; z < 5; z++)
+                    for (int x = 0; x < 5; x++) {
+                        world.setBlock(originPos.posX + x, originPos.posY + y, originPos.posZ + z, Blocks.air);
+                    }
         }
 
         if (target != null && target != Blocks.air) {
@@ -93,6 +99,7 @@ public final class MultiBlock {
 
     class Processor {
         Map<Integer, List<Block>> maps;
+
         public Processor(Map<Integer, List<Block>> maps) {
             this.maps = maps;
         }
