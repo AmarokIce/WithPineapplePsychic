@@ -1,6 +1,6 @@
 package club.someoneice.pineapplepsychic.inventory;
 
-import club.someoneice.pineapplepsychic.util.ObjectUtil;
+import club.someoneice.cookie.util.ObjectUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -16,7 +16,7 @@ public class SimpleInventory implements IInventory {
     private final TileEntity tile;
     private final ItemStack[] inventory;
 
-    public SimpleInventory(String name, int size, TileEntity tile) {
+    public SimpleInventory(String name, int size, @Nullable TileEntity tile) {
         this.name = name;
         this.size = size;
         this.tile = tile;

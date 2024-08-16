@@ -10,6 +10,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public final class MultiBlock {
     public static final MultiBlock INITIALIZE = new MultiBlock();
 
@@ -97,7 +98,7 @@ public final class MultiBlock {
         return true;
     }
 
-    class Processor {
+    private static final class Processor {
         Map<Integer, List<Block>> maps;
 
         public Processor(Map<Integer, List<Block>> maps) {

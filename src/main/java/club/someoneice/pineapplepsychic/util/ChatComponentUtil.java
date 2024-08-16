@@ -8,6 +8,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
+@SuppressWarnings({"unused", "unchecked"})
 public final class ChatComponentUtil {
     private ChatComponentUtil() {
     }

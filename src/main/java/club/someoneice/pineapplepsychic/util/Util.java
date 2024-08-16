@@ -1,5 +1,6 @@
 package club.someoneice.pineapplepsychic.util;
 
+import club.someoneice.cookie.util.ObjectUtil;
 import club.someoneice.json.JSON;
 import club.someoneice.pineapplepsychic.PineappleMain;
 import club.someoneice.pineapplepsychic.inventory.SimpleInventory;
@@ -19,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+@SuppressWarnings("unused")
 public final class Util {
     public static final JSON JSON_BEAN = JSON.json5;
 
@@ -57,16 +59,16 @@ public final class Util {
     }
 
     public static void itemThrowOut(World world, ChunkPosition pos, ItemStack... item) {
-        itemThrowOut(world, pos, ObjectUtil.objectLet(Lists.newArrayList(), it -> it.addAll(Arrays.asList(item))));
+        itemThrowOut(world, pos, ObjectUtil.objectLet(Lists.newArrayList(), it -> {
+            it.addAll(Arrays.asList(item));
+        }));
     }
 
     public static void itemThrowOut(World world, ChunkPosition pos, List<ItemStack> item) {
         if (world.isRemote) return;
         item.removeIf(Objects::isNull);
         item.removeIf(Util::isFakeItemStack);
-        item.forEach(it -> {
-            world.spawnEntityInWorld(new EntityItem(world, pos.chunkPosX, pos.chunkPosY, pos.chunkPosZ, it));
-        });
+        item.forEach(it -> world.spawnEntityInWorld(new EntityItem(world, pos.chunkPosX, pos.chunkPosY, pos.chunkPosZ, it)));
     }
 
     @SuppressWarnings("all")

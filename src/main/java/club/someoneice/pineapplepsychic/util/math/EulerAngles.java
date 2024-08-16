@@ -1,6 +1,6 @@
 package club.someoneice.pineapplepsychic.util.math;
 
-import club.someoneice.pineapplepsychic.util.ObjectUtil;
+import club.someoneice.cookie.util.ObjectUtil;
 
 public final class EulerAngles {
     public double pitch;

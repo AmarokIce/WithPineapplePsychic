@@ -1,13 +1,12 @@
 package club.someoneice.pineapplepsychic.util;
 
 import club.someoneice.togocup.tags.Ingredient;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import net.minecraft.item.ItemStack;
 
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 @SuppressWarnings("unused")
@@ -22,12 +21,10 @@ public final class MatchUtil {
      * @param A The array A.
      * @param B The array B.
      */
-    public static <T> boolean matchArray(T[] A, T[] B) {
+    public static <T> boolean matchArray(Collection<T> A, Collection<T> B) {
         if (!matchArraySizeWithoutNull(A, B)) return false;
-        List<T> listA = Arrays.asList(A);
-        List<T> listB = Arrays.asList(B);
-        listA.removeIf(Objects::isNull);
-        listB.removeIf(Objects::isNull);
+        List<T> listA = Lists.newArrayList(A.stream().filter(Objects::nonNull).iterator());
+        List<T> listB = Lists.newArrayList(B.stream().filter(Objects::nonNull).iterator());
 
         if (listA.isEmpty() && listB.isEmpty()) return true;
         if (listA.size() != listB.size()) return false;
@@ -50,6 +47,28 @@ public final class MatchUtil {
      * @param recipeIn The recipe requires.
      * @param input    The input by player.
      */
+    public static boolean matchRecipe(final ImmutableList<Ingredient> recipeIn, final ImmutableList<ItemStack> input) {
+        if (!matchArraySizeWithoutNull(recipeIn, input)) return false;
+
+        List<Integer> cache = Lists.newArrayList();
+        for (int i = 0; i < recipeIn.size(); i ++) {
+            for (int o = 0; o < input.size(); o ++) {
+                if (cache.contains(o)) continue;
+                if (matchItemStackInIngredient(recipeIn.get(i), input.get(o))) {
+                    cache.add(o);
+                    break;
+                }
+            }
+
+            if (cache.size()  < i) {
+                return false;
+            }
+        }
+
+        return cache.size() == recipeIn.size();
+    }
+
+    /*
     public static boolean matchRecipe(final Ingredient[] recipeIn, final ItemStack[] input) {
         if (!matchArraySizeWithoutNull(recipeIn, input)) return false;
         List<Ingredient> listRecipe = Arrays.asList(recipeIn);
@@ -77,6 +96,7 @@ public final class MatchUtil {
 
         return listRecipe.isEmpty();
     }
+    */
 
     /**
      * Check to see if the item is included in Ingredient. <br />
@@ -99,21 +119,18 @@ public final class MatchUtil {
      * Match the Array that holds the ItemStack. <br />
      * 匹配持有 ItemStack 的 Array。
      */
-    public static boolean matchStacks(ItemStack[] A, ItemStack[] B) {
+    public static boolean matchStacks(Collection<ItemStack> A, Collection<ItemStack> B) {
         if (!matchArraySizeWithoutNull(A, B)) return false;
-        List<ItemStack> listA = Arrays.asList(A);
-        List<ItemStack> listB = Arrays.asList(B);
-
-        return matchStackList(listA, listB);
+        return matchStackList(A, B);
     }
 
     /**
      * Match the List that holds the ItemStack. <br />
      * 匹配持有 ItemStack 的 List。
      */
-    public static boolean matchStackList(List<ItemStack> listA, List<ItemStack> listB) {
-        listA.removeIf(Objects::isNull);
-        listB.removeIf(Objects::isNull);
+    public static boolean matchStackList(Collection<ItemStack> AList, Collection<ItemStack> BList) {
+        List<ItemStack> listA = Lists.newArrayList(AList.stream().filter(Objects::nonNull).iterator());
+        List<ItemStack> listB = Lists.newArrayList(BList.stream().filter(Objects::nonNull).iterator());
 
         if (listA.isEmpty() && listB.isEmpty()) return true;
         if (listA.size() != listB.size()) return false;
@@ -134,7 +151,7 @@ public final class MatchUtil {
     /**
      * Check the Array size without Null objects.
      */
-    public static boolean matchArraySizeWithoutNull(Object[] A, Object[] B) {
-        return Arrays.stream(A).filter(Objects::nonNull).count() == Arrays.stream(B).filter(Objects::nonNull).count();
+    public static <A, B> boolean matchArraySizeWithoutNull(Collection<A> AList, Collection<B> BList) {
+        return AList.stream().filter(Objects::nonNull).count() == BList.stream().filter(Objects::nonNull).count();
     }
 }

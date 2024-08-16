@@ -3,6 +3,7 @@ package club.someoneice.pineapplepsychic.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("unused")
 public final class StringHelper {
     private StringHelper() {
     }
