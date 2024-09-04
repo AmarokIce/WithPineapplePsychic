@@ -7,12 +7,12 @@ import net.minecraft.command.ICommandSender;
 public class CommandSetConfig extends CommandBase {
     @Override
     public String getCommandName() {
-        return "reload_config";
+        return "reloadConfig";
     }
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "/reload_config [config name]";
+        return "/reloadConfig [config name]";
     }
 
     @Override

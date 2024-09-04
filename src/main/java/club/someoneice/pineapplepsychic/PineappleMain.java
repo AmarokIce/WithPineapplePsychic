@@ -96,12 +96,8 @@ public class PineappleMain {
             String name = pos == -1 ? fullName : fullName.substring(pos + 1);
             if (zipentry.isDirectory()) continue;
 
-            String classname = name.replace(".class", "").replace("\\", ".").replace("/", ".");
-            Class<?> clazz = Class.forName(classname, true, modClassLoader);
-            if (!clazz.isAnnotationPresent(AutoRegistryTileEntity.class)) return;
-            Object tile = clazz.newInstance();
-            if (!(tile instanceof TileEntity)) return;
-            GameRegistry.registerTileEntity((Class<? extends TileEntity>) clazz, clazz.getName());
+            String className = name.replace(".class", "").replace("\\", ".").replace("/", ".");
+            if (registerTileEntityByClass(className)) return;
         }
         fileinputstream.close();
     }
@@ -114,14 +110,21 @@ public class PineappleMain {
             if (child.isDirectory()) readFromDirectory(child, file);
             else if (child.isFile()) {
 
-                String classname = (!file.isFile() && child.getPath().startsWith(file.getPath()) ? child.getPath().substring(file.getPath().length() + 1) : "").replace(".class", "").replace("\\", ".").replace("/", ".");
-                Class<?> clazz = Class.forName(classname, true, modClassLoader);
-                if (!clazz.isAnnotationPresent(AutoRegistryTileEntity.class)) return;
-                Object tile = clazz.newInstance();
-                if (!(tile instanceof TileEntity)) return;
-                GameRegistry.registerTileEntity((Class<? extends TileEntity>) clazz, clazz.getName());
+                String className = (!file.isFile() && child.getPath().startsWith(file.getPath()) ? child.getPath().substring(file.getPath().length() + 1) : "").replace(".class", "").replace("\\", ".").replace("/", ".");
+                if (registerTileEntityByClass(className)) return;
+
             }
         }
+    }
+
+    private static boolean registerTileEntityByClass(String className) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        Class<?> clazz = Class.forName(className, true, modClassLoader);
+        if (!clazz.isAnnotationPresent(AutoRegistryTileEntity.class)) return true;
+        Object tile = clazz.newInstance();
+        AutoRegistryTileEntity annotation = clazz.getDeclaredAnnotation(AutoRegistryTileEntity.class);
+        if (!(tile instanceof TileEntity)) return true;
+        GameRegistry.registerTileEntity((Class<? extends TileEntity>) clazz, annotation.name().isEmpty() ? clazz.getName() : annotation.name());
+        return false;
     }
 
     public static class PineappleConfig extends ConfigBeanV2 implements IPineappleConfig {

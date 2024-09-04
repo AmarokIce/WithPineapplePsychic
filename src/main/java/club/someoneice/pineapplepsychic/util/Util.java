@@ -45,7 +45,15 @@ public final class Util {
     }
 
     public static boolean itemStackEquals(ItemStack A, ItemStack B) {
-        return (A == null && B == null) || (A != null && B != null && A.getItem() == B.getItem() && A.getItemDamage() == B.getItemDamage());
+        if (A == null && B == null)
+            return true;
+
+        if (A == null || B == null) {
+            return false;
+        }
+
+        boolean anyMetaFlag = A.getItemDamage() == Short.MAX_VALUE || B.getItemDamage() == Short.MAX_VALUE;
+        return A.getItem() == B.getItem() && (anyMetaFlag || A.getItemDamage() == B.getItemDamage());
     }
 
     public static boolean isFakeItemStack(ItemStack item) {
