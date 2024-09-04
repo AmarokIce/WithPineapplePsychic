@@ -127,13 +127,36 @@ allprojects {
     }
 }
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+javadoc {
+    options.encoding = 'UTF-8'
+}
+
+
 publishing {
     repositories {
     }
 
     publications {
-        gpr(MavenPublication) {
-            from(components.java)
+        maven(MavenPublication) {
+            groupId project.group
+            artifactId project.name
+            version project.version
+
+            from components.java
+
+            pom {
+                licenses {
+                    license {
+                        name = 'Mozilla Public License v2.0'
+                        url = 'https://www.mozilla.org/en-US/MPL/2.0/'
+                    }
+                }
+            }
         }
     }
 }
