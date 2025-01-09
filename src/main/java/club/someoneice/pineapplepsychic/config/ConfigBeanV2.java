@@ -44,7 +44,7 @@ public class ConfigBeanV2 {
     }
 
     /**
-     * 当重载时使用。                      <br />
+     * 当重载时使用。                      <br>
      * Use it when we should overload.
      */
     public void readFileAndOverrideConfig() {

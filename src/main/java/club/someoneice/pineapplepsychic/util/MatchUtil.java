@@ -15,11 +15,13 @@ public final class MatchUtil {
     }
 
     /**
-     * Match two of arrays' what they hold is the same. <br />
-     * 匹配两份 Array 持有的内容是相同的。
+     * Match two of arrays' what they hold is the same. <br>
+     * 匹配两份 Array 持有的内容是相同的。<br>
      *
      * @param A The array A.
      * @param B The array B.
+     * @return If the collections same.
+     * @param <T> The anything.
      */
     public static <T> boolean matchArray(Collection<T> A, Collection<T> B) {
         if (!matchArraySizeWithoutNull(A, B)) return false;
@@ -41,8 +43,8 @@ public final class MatchUtil {
     }
 
     /**
-     * It is usually used to match recipes, checking that what is entered is the same as what the recipe requires.  <br />
-     * 通常会用于匹配食谱，检查输入的内容与食谱需求是相同的。
+     * It is usually used to match recipes, checking that what is entered is the same as what the recipe requires.  <br>
+     * 通常会用于匹配食谱，检查输入的内容与食谱需求是相同的。<br>
      *
      * @param recipeIn The recipe requires.
      * @param input    The input by player.
@@ -99,7 +101,7 @@ public final class MatchUtil {
     */
 
     /**
-     * Check to see if the item is included in Ingredient. <br />
+     * Check to see if the item is included in Ingredient. <br>
      * 检查物品是否被包含于 Ingredient。
      */
     public static boolean matchItemStackInIngredient(Ingredient ingredient, ItemStack itemStack) {
@@ -108,7 +110,7 @@ public final class MatchUtil {
     }
 
     /**
-     * Check to see if the item is included in List. <br />
+     * Check to see if the item is included in List. <br>
      * 检查物品是否被包含于 List。
      */
     public static boolean matchStackInList(List<ItemStack> array, ItemStack target) {
@@ -116,7 +118,7 @@ public final class MatchUtil {
     }
 
     /**
-     * Match the Array that holds the ItemStack. <br />
+     * Match the Array that holds the ItemStack. <br>
      * 匹配持有 ItemStack 的 Array。
      */
     public static boolean matchStacks(Collection<ItemStack> A, Collection<ItemStack> B) {
@@ -125,7 +127,7 @@ public final class MatchUtil {
     }
 
     /**
-     * Match the List that holds the ItemStack. <br />
+     * Match the List that holds the ItemStack. <br>
      * 匹配持有 ItemStack 的 List。
      */
     public static boolean matchStackList(Collection<ItemStack> AList, Collection<ItemStack> BList) {

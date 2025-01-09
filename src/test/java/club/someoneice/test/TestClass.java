@@ -1,7 +1,5 @@
 package club.someoneice.test;
 
-import com.google.common.collect.Lists;
-
 import java.util.Arrays;
 
 public class TestClass {

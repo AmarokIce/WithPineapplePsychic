@@ -38,17 +38,19 @@ public final class Util {
             }
         }
 
-        if (item == null)
+        if (item == null) {
             throw new NumberInvalidException("commands.give.notFound", str);
+        }
 
         return item;
     }
 
     public static boolean itemStackEquals(ItemStack A, ItemStack B) {
-        if (A == null && B == null)
+        if (Objects.isNull(A) && Objects.isNull(B)) {
             return true;
+        }
 
-        if (A == null || B == null) {
+        if (Objects.isNull(A) || Objects.isNull(B)) {
             return false;
         }
 
@@ -57,7 +59,7 @@ public final class Util {
     }
 
     public static boolean isFakeItemStack(ItemStack item) {
-        return item.getItem() == null;
+        return Objects.isNull(item) || Objects.isNull(item.getItem());
     }
 
     public static void giveOrThrowOut(EntityPlayer player, ItemStack item) {

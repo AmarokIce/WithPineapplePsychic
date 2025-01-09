@@ -68,10 +68,10 @@ repositories {
 }
 
 dependencies {
-    includeCompile 'club.someoneice.json:amarok-json-for-java:1.6'
+    includeCompile 'club.someoneice.json:amarok-json-for-java:1.7.3'
     includeCompile 'club.someoneice.cookie:PineappleCookie:1.2'
 
-    implementation "club.someoneice.togocup.pineapple_tag:pineapple-tag:1.5"
+    implementation "club.someoneice.togocup.pineapple_tag:pineapple-tag:1.5.1"
 
     if (debugWithM3.toBoolean()) {
         runtimeOnly "maven.modrinth:notenoughitems-unofficial:2.5.17-GTNH"

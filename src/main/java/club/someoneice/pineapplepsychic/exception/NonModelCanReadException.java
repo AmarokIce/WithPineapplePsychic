@@ -1,9 +1,11 @@
 package club.someoneice.pineapplepsychic.exception;
 
 /**
- * Is that a exception model json? Or the coder call the model in a wrong time?
+ * @deprecated
+ * Is that an exception model json? Or the coder call the model in a wrong time?
  * Throw this out, Tell the user "It an Illegal State Model!".
  */
+@Deprecated
 public class NonModelCanReadException extends IllegalArgumentException {
 
     public NonModelCanReadException() {
