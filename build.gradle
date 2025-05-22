@@ -52,7 +52,7 @@ repositories {
 
     maven {
         name "Amarok Maven"
-        url "http://maven.snowlyicewolf.club/"
+        url "http://124.222.209.238:1443/maven/"
         allowInsecureProtocol = true
     }
 
@@ -68,7 +68,7 @@ repositories {
 }
 
 dependencies {
-    includeCompile 'club.someoneice.json:amarok-json-for-java:1.7.3'
+    includeCompile 'club.snowlyicewolf:amarok-json-for-java:1.7.8'
     includeCompile 'club.someoneice.cookie:PineappleCookie:1.2'
 
     implementation "club.someoneice.togocup.pineapple_tag:pineapple-tag:1.5.1"
