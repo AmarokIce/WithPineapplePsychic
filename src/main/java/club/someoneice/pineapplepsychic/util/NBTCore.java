@@ -9,67 +9,67 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 public final class NBTCore {
-    private static final String NBTPath = System.getProperty("user.dir") + File.separator + "NBTFile";
+  private static final String NBTPath = System.getProperty("user.dir") + File.separator + "NBTFile";
 
-    private NBTCore() {
+  private NBTCore() {
+  }
+
+  public static void cmdWriteToNBT(EntityPlayer player) {
+    try {
+      NBTTagCompound tag = new NBTTagCompound();
+      player.writeToNBT(tag);
+      File output = new File(NBTPath, player.getDisplayName() + ".gzip");
+
+      if (!output.exists() && !output.getParentFile().isDirectory()) {
+        output.getParentFile().mkdirs();
+      }
+      if (!output.isFile()) {
+        output.createNewFile();
+      }
+
+      CompressedStreamTools.writeCompressed(tag, Files.newOutputStream(output.toPath()));
+    } catch (IOException ignored) {
+    }
+  }
+
+  public static void cmdReadFromNBT(EntityPlayer player, PlayerVec pos) throws IOException {
+    File input = new File(NBTPath, player.getDisplayName() + ".gzip");
+    if (!input.exists() || !input.isFile()) {
+      return;
+    }
+    NBTTagCompound tag = CompressedStreamTools.readCompressed(Files.newInputStream(input.toPath()));
+    tag.setInteger("Dimension", pos.DIMId);
+    tag.setTag("Pos", newDoubleNBTList(pos.playerPos.xCoord, pos.playerPos.yCoord, pos.playerPos.zCoord));
+    tag.setTag("Rotation", newFloatNBTList(player.rotationYaw, player.rotationPitch));
+
+    player.readFromNBT(tag);
+  }
+
+  private static NBTTagList newDoubleNBTList(double... args) {
+    NBTTagList nbttaglist = new NBTTagList();
+    for (double d1 : args) {
+      nbttaglist.appendTag(new NBTTagDouble(d1));
     }
 
-    public static void cmdWriteToNBT(EntityPlayer player) {
-        try {
-            NBTTagCompound tag = new NBTTagCompound();
-            player.writeToNBT(tag);
-            File output = new File(NBTPath, player.getDisplayName() + ".gzip");
+    return nbttaglist;
+  }
 
-            if (!output.exists() && !output.getParentFile().isDirectory()) {
-                output.getParentFile().mkdirs();
-            }
-            if (!output.isFile()) {
-                output.createNewFile();
-            }
-
-            CompressedStreamTools.writeCompressed(tag, Files.newOutputStream(output.toPath()));
-        } catch (IOException ignored) {
-        }
+  private static NBTTagList newFloatNBTList(float... args) {
+    NBTTagList nbttaglist = new NBTTagList();
+    for (float f1 : args) {
+      nbttaglist.appendTag(new NBTTagFloat(f1));
     }
 
-    public static void cmdReadFromNBT(EntityPlayer player, PlayerVec pos) throws IOException {
-        File input = new File(NBTPath, player.getDisplayName() + ".gzip");
-        if (!input.exists() || !input.isFile()) {
-            return;
-        }
-        NBTTagCompound tag = CompressedStreamTools.readCompressed(Files.newInputStream(input.toPath()));
-        tag.setInteger("Dimension", pos.DIMId);
-        tag.setTag("Pos", newDoubleNBTList(pos.playerPos.xCoord, pos.playerPos.yCoord, pos.playerPos.zCoord));
-        tag.setTag("Rotation", newFloatNBTList(player.rotationYaw, player.rotationPitch));
+    return nbttaglist;
+  }
 
-        player.readFromNBT(tag);
+  public static final class PlayerVec {
+    public Vec3 playerPos;
+    public int DIMId;
+
+    public PlayerVec(Vec3 vec3, int DIMId) {
+      this.playerPos = vec3;
+      this.DIMId = DIMId;
     }
-
-    private static NBTTagList newDoubleNBTList(double... args) {
-        NBTTagList nbttaglist = new NBTTagList();
-        for (double d1 : args) {
-            nbttaglist.appendTag(new NBTTagDouble(d1));
-        }
-
-        return nbttaglist;
-    }
-
-    private static NBTTagList newFloatNBTList(float... args) {
-        NBTTagList nbttaglist = new NBTTagList();
-        for (float f1 : args) {
-            nbttaglist.appendTag(new NBTTagFloat(f1));
-        }
-
-        return nbttaglist;
-    }
-
-    public static final class PlayerVec {
-        public Vec3 playerPos;
-        public int DIMId;
-
-        public PlayerVec(Vec3 vec3, int DIMId) {
-            this.playerPos = vec3;
-            this.DIMId = DIMId;
-        }
-    }
+  }
 }

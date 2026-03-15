@@ -7,17 +7,17 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import java.util.List;
 
 public interface IPineappleCommand extends Comparable<IPineappleCommand> {
-    String getCommandName();
+  String getCommandName();
 
-    String getCommandUsingHelper();
+  String getCommandUsingHelper();
 
-    List<String> getCommandAliases();
+  List<String> getCommandAliases();
 
-    void processCommand(EntityPlayer sender, String[] parameterTree);
+  void processCommand(EntityPlayer sender, String[] parameterTree);
 
-    int getRequiredPermissionLevel();
+  int getRequiredPermissionLevel();
 
-    boolean canCommandSenderUseCommand(ICommandSender sender);
+  boolean canCommandSenderUseCommand(ICommandSender sender);
 
-    List<String> addTabCompletionOptions(EntityPlayerMP sender, String[] parameterTree);
+  List<String> addTabCompletionOptions(EntityPlayerMP sender, String[] parameterTree);
 }

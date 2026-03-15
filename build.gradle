@@ -7,7 +7,7 @@ buildscript {
         }
         maven {
             name = "forge"
-            url = "https://maven.minecraftforge.net/"
+            url = "https://files.minecraftforge.net/maven"
         }
         maven {
             name = "sonatype"
@@ -51,10 +51,10 @@ repositories {
     }
 
     maven {
-        name "Amarok Maven"
-        url "http://maven.snowlyicewolf.club/"
-        allowInsecureProtocol = true
+        name "kTT MavenSnapshots"
+        url "https://maven.kessokuteatime.work/snapshots"
     }
+
 
     maven {
         name "Curse Maven"
@@ -68,19 +68,20 @@ repositories {
 }
 
 dependencies {
-    includeCompile 'club.someoneice.json:amarok-json-for-java:1.7.3'
-    includeCompile 'club.someoneice.cookie:PineappleCookie:1.2'
+    includeCompile 'club.snowlyicewolf:amarok-json-for-java:1.7.9'
+    includeCompile 'club.snowlyicewolf:amarok-kdl-for-java:1.0.1'
+    includeCompile 'club.someoneice.cookie:PineappleCookie:1.2.1'
 
-    implementation "club.someoneice.togocup.pineapple_tag:pineapple-tag:1.5.1"
+    implementation "curse.maven:pineapple-tags-1085423:6555243"
 
     if (debugWithM3.toBoolean()) {
         runtimeOnly "maven.modrinth:notenoughitems-unofficial:2.5.17-GTNH"
         runtimeOnly "maven.modrinth:codechickencore-unofficial:1.2.1"
         runtimeOnly "maven.modrinth:codechickenlib-unofficial:1.2.1"
 
-        runtimeOnly "curse.maven:Muya-530214:4364097"
-        runtimeOnly "curse.maven:ManaMetalMod-531708:5099147"
-        runtimeOnly "curse.maven:Trt-967327:5150809"
+        implementation "curse.maven:Muya-530214:4364097"
+        implementation "curse.maven:ManaMetalMod-531708:6159869"
+        implementation "curse.maven:Trt-967327:6153293"
     }
 }
 
@@ -127,6 +128,7 @@ allprojects {
     }
 }
 
+
 java {
     withJavadocJar()
     withSourcesJar()
@@ -136,27 +138,4 @@ javadoc {
     options.encoding = 'UTF-8'
 }
 
-
-publishing {
-    repositories {
-    }
-
-    publications {
-        maven(MavenPublication) {
-            groupId project.group
-            artifactId project.name
-            version project.version
-
-            from components.java
-
-            pom {
-                licenses {
-                    license {
-                        name = 'Mozilla Public License v2.0'
-                        url = 'https://www.mozilla.org/en-US/MPL/2.0/'
-                    }
-                }
-            }
-        }
-    }
-}
+apply from: "publishing.gradle"

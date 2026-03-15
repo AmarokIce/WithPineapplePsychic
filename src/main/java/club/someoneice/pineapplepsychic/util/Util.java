@@ -22,86 +22,86 @@ import java.util.Objects;
 
 @SuppressWarnings("unused")
 public final class Util {
-    public static final JSON JSON_BEAN = JSON.json5;
+  public static final JSON JSON_BEAN = JSON.json5;
 
-    private Util() {
+  private Util() {
+  }
+
+  public static Item getItemByText(String str) {
+    Item item = (Item) Item.itemRegistry.getObject(str);
+
+    if (item == null) {
+      try {
+        item = Item.getItemById(Integer.parseInt(str));
+      } catch (NumberFormatException e) {
+        PineappleMain.LOGGER.error(e);
+      }
     }
 
-    public static Item getItemByText(String str) {
-        Item item = (Item) Item.itemRegistry.getObject(str);
-
-        if (item == null) {
-            try {
-                item = Item.getItemById(Integer.parseInt(str));
-            } catch (NumberFormatException e) {
-                PineappleMain.LOGGER.error(e);
-            }
-        }
-
-        if (item == null) {
-            throw new NumberInvalidException("commands.give.notFound", str);
-        }
-
-        return item;
+    if (item == null) {
+      throw new NumberInvalidException("commands.give.notFound", str);
     }
 
-    public static boolean itemStackEquals(ItemStack A, ItemStack B) {
-        if (Objects.isNull(A) && Objects.isNull(B)) {
-            return true;
-        }
+    return item;
+  }
 
-        if (Objects.isNull(A) || Objects.isNull(B)) {
-            return false;
-        }
-
-        boolean anyMetaFlag = A.getItemDamage() == Short.MAX_VALUE || B.getItemDamage() == Short.MAX_VALUE;
-        return A.getItem() == B.getItem() && (anyMetaFlag || A.getItemDamage() == B.getItemDamage());
+  public static boolean itemStackEquals(ItemStack A, ItemStack B) {
+    if (Objects.isNull(A) && Objects.isNull(B)) {
+      return true;
     }
 
-    public static boolean isFakeItemStack(ItemStack item) {
-        return Objects.isNull(item) || Objects.isNull(item.getItem());
+    if (Objects.isNull(A) || Objects.isNull(B)) {
+      return false;
     }
 
-    public static void giveOrThrowOut(EntityPlayer player, ItemStack item) {
-        if (player.inventory.addItemStackToInventory(item)) return;
-        if (player.worldObj.isRemote) return;
-        player.worldObj.spawnEntityInWorld(new EntityItem(player.worldObj, player.posX, player.posY, player.posZ, item));
-    }
+    boolean anyMetaFlag = A.getItemDamage() == Short.MAX_VALUE || B.getItemDamage() == Short.MAX_VALUE;
+    return A.getItem() == B.getItem() && (anyMetaFlag || A.getItemDamage() == B.getItemDamage());
+  }
 
-    public static void itemThrowOut(World world, ChunkPosition pos, ItemStack... item) {
-        itemThrowOut(world, pos, ObjectUtil.objectLet(Lists.newArrayList(), it -> {
-            it.addAll(Arrays.asList(item));
-        }));
-    }
+  public static boolean isFakeItemStack(ItemStack item) {
+    return Objects.isNull(item) || Objects.isNull(item.getItem());
+  }
 
-    public static void itemThrowOut(World world, ChunkPosition pos, List<ItemStack> item) {
-        if (world.isRemote) return;
-        item.removeIf(Objects::isNull);
-        item.removeIf(Util::isFakeItemStack);
-        item.forEach(it -> world.spawnEntityInWorld(new EntityItem(world, pos.chunkPosX, pos.chunkPosY, pos.chunkPosZ, it)));
-    }
+  public static void giveOrThrowOut(EntityPlayer player, ItemStack item) {
+    if (player.inventory.addItemStackToInventory(item)) return;
+    if (player.worldObj.isRemote) return;
+    player.worldObj.spawnEntityInWorld(new EntityItem(player.worldObj, player.posX, player.posY, player.posZ, item));
+  }
 
-    @SuppressWarnings("all")
-    public static SimpleInventory getInvFromItemStack(ItemStack item, int size) {
-        SimpleInventory inventory = new SimpleInventory(size);
-        if (item == null || item.getTagCompound() == null) return inventory;
-        if (item.getTagCompound().hasKey("inv_data"))
-            inventory.load(item.getTagCompound().getCompoundTag("inv_data"));
-        return inventory;
-    }
+  public static void itemThrowOut(World world, ChunkPosition pos, ItemStack... item) {
+    itemThrowOut(world, pos, ObjectUtil.objectLet(Lists.newArrayList(), it -> {
+      it.addAll(Arrays.asList(item));
+    }));
+  }
 
-    @SuppressWarnings("all")
-    public static void setInvFromItemStack(ItemStack item, SimpleInventory inventory) {
-        if (item == null) return;
-        if (item.getTagCompound() == null) item.stackTagCompound = new NBTTagCompound();
-        item.getTagCompound().setTag("inv_data", inventory.write());
-    }
+  public static void itemThrowOut(World world, ChunkPosition pos, List<ItemStack> item) {
+    if (world.isRemote) return;
+    item.removeIf(Objects::isNull);
+    item.removeIf(Util::isFakeItemStack);
+    item.forEach(it -> world.spawnEntityInWorld(new EntityItem(world, pos.chunkPosX, pos.chunkPosY, pos.chunkPosZ, it)));
+  }
 
-    public static void sendToPlayer(EntityPlayer player, String str) {
-        player.addChatMessage(new ChatComponentText(str));
-    }
+  @SuppressWarnings("all")
+  public static SimpleInventory getInvFromItemStack(ItemStack item, int size) {
+    SimpleInventory inventory = new SimpleInventory(size);
+    if (item == null || item.getTagCompound() == null) return inventory;
+    if (item.getTagCompound().hasKey("inv_data"))
+      inventory.load(item.getTagCompound().getCompoundTag("inv_data"));
+    return inventory;
+  }
 
-    public static void sendToPlayerWithTranslation(EntityPlayer player, String str) {
-        player.addChatMessage(new ChatComponentTranslation(str));
-    }
+  @SuppressWarnings("all")
+  public static void setInvFromItemStack(ItemStack item, SimpleInventory inventory) {
+    if (item == null) return;
+    if (item.getTagCompound() == null) item.stackTagCompound = new NBTTagCompound();
+    item.getTagCompound().setTag("inv_data", inventory.write());
+  }
+
+  public static void sendToPlayer(EntityPlayer player, String str) {
+    player.addChatMessage(new ChatComponentText(str));
+  }
+
+  public static void sendToPlayerWithTranslation(EntityPlayer player, String str) {
+    player.addChatMessage(new ChatComponentTranslation(str));
+  }
 }

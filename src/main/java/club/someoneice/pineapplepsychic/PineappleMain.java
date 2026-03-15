@@ -3,9 +3,12 @@ package club.someoneice.pineapplepsychic;
 import club.someoneice.pineapplepsychic.api.AutoRegistryTileEntity;
 import club.someoneice.pineapplepsychic.api.IPineappleConfig;
 import club.someoneice.pineapplepsychic.config.ConfigBeanV2;
+import club.someoneice.pineapplepsychic.event.shooter.SPlayerEvent;
+import club.someoneice.pineapplepsychic.event.shooter.STickEvent;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.ModClassLoader;
@@ -14,6 +17,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.CoreModManager;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,121 +31,125 @@ import java.util.zip.ZipInputStream;
 @SuppressWarnings("unchecked")
 @Mod(modid = PineappleMain.MODID, name = PineappleMain.NAME, version = PineappleMain.VERSION, useMetadata = true)
 public class PineappleMain {
-    public static final String MODID = "pineapple_psychic";
-    public static final String NAME = "Pineapple Psychic";
-    public static final String VERSION = "@VERSION@";
-    public static final Logger LOGGER = LogManager.getLogger("[Pineapple Psychic]");
-    private static final ModClassLoader modClassLoader = (ModClassLoader) Loader.instance().getModClassLoader();
+  public static final String MODID = "pineapple_psychic";
+  public static final String NAME = "Pineapple Psychic";
+  public static final String VERSION = "@VERSION@";
+  public static final Logger LOGGER = LogManager.getLogger("[Pineapple Psychic]");
+  private static final ModClassLoader modClassLoader = (ModClassLoader) Loader.instance().getModClassLoader();
 
-    @Mod.EventHandler
-    public static void onPreInitialization(FMLPreInitializationEvent event) {
-        Lists.newArrayList("",
-                "====================================================================================================",
-                "|| .---.  _                                .-.             .---.                  .-.    _        ||",
-                "|| : .; ::_;                               : :             : .; :                 : :   :_;       ||",
-                "|| :  _.'.-.,-.,-. .--.  .--.  .---. .---. : :   .--.      :  _.'.--. .-..-. .--. : `-. .-. .--.  ||",
-                "|| : :   : :: ,. :' '_.'' .; ; : .; `: .; `: :_ ' '_.'     : :  `._-.': :; :'  ..': .. :: :'  ..' ||",
-                "|| :_;   :_;:_;:_;`.__.'`.__,_;: ._.': ._.'`.__;`.__.'     :_;  `.__.'`._. ;`.__.':_;:_;:_;`.__.' ||",
-                "||                             : :   : :                               .-. :                      ||",
-                "||                             :_;   :_;                               `._.'                      ||",
-                "====================================================================================================",
-                "",
-                "Pineapple Psychic is loading now."
-        ).forEach(LOGGER::info);
+  @Mod.EventHandler
+  public static void onPreInitialization(FMLPreInitializationEvent event) {
+    Lists.newArrayList("",
+      "====================================================================================================",
+      "|| .---.  _                                .-.             .---.                  .-.    _        ||",
+      "|| : .; ::_;                               : :             : .; :                 : :   :_;       ||",
+      "|| :  _.'.-.,-.,-. .--.  .--.  .---. .---. : :   .--.      :  _.'.--. .-..-. .--. : `-. .-. .--.  ||",
+      "|| : :   : :: ,. :' '_.'' .; ; : .; `: .; `: :_ ' '_.'     : :  `._-.': :; :'  ..': .. :: :'  ..' ||",
+      "|| :_;   :_;:_;:_;`.__.'`.__,_;: ._.': ._.'`.__;`.__.'     :_;  `.__.'`._. ;`.__.':_;:_;:_;`.__.' ||",
+      "||                             : :   : :                               .-. :                      ||",
+      "||                             :_;   :_;                               `._.'                      ||",
+      "====================================================================================================",
+      ""
+    ).forEach(LOGGER::info);
 
-        new PineappleConfig();
-        try {
-            autoRegisterTileEntity();
-        } catch (Exception e) {
-            LOGGER.error(e);
-        }
+    new PineappleConfig();
+    try {
+      autoRegisterTileEntity();
+    } catch (Exception e) {
+      LOGGER.error(e);
     }
 
-    @Mod.EventHandler
-    public static void onInitialization(FMLPreInitializationEvent event) {
+    MinecraftForge.EVENT_BUS.register(new SPlayerEvent());
+    MinecraftForge.EVENT_BUS.register(new STickEvent());
+    FMLCommonHandler.instance().bus().register(new SPlayerEvent());
+    FMLCommonHandler.instance().bus().register(new STickEvent());
+  }
+
+  @Mod.EventHandler
+  public static void onInitialization(FMLPreInitializationEvent event) {
+  }
+
+  @Mod.EventHandler
+  public static void onServerInitialization(FMLServerStartingEvent event) {
+    // event.registerServerCommand(new CommandSetConfig());
+  }
+
+  private static void autoRegisterTileEntity() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    ImmutableList<Object> knownLibraries = ImmutableList.builder().addAll(modClassLoader.getDefaultLibraries()).addAll(CoreModManager.getLoadedCoremods()).build();
+    File[] minecraftSources = modClassLoader.getParentSources();
+    HashSet<String> searchedSources = Sets.newHashSet();
+
+    for (File minecraftSource : minecraftSources) {
+      if (searchedSources.contains(minecraftSource.getAbsolutePath())) continue;
+      searchedSources.add(minecraftSource.getAbsolutePath());
+      if (minecraftSource.isFile()) {
+        if (knownLibraries.contains(minecraftSource.getName())) continue;
+        readFromZipFile(minecraftSource);
+      }
+      if (!minecraftSource.isDirectory()) continue;
+      readFromDirectory(minecraftSource, minecraftSource);
+    }
+  }
+
+  private static void readFromZipFile(File file) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    FileInputStream fileinputstream = new FileInputStream(file);
+    ZipInputStream zipinputstream = new ZipInputStream(fileinputstream);
+
+    while (true) {
+      ZipEntry zipentry = zipinputstream.getNextEntry();
+      if (zipentry == null) break;
+
+      String fullName = zipentry.getName().replace('\\', '/');
+      int pos = fullName.lastIndexOf(47);
+      String name = pos == -1 ? fullName : fullName.substring(pos + 1);
+      if (zipentry.isDirectory()) continue;
+
+      String className = name.replace(".class", "").replace("\\", ".").replace("/", ".");
+      if (registerTileEntityByClass(className)) return;
+    }
+    fileinputstream.close();
+  }
+
+  private static void readFromDirectory(File directory, File file) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+    File[] files = directory.listFiles();
+
+    if (files == null) return;
+    for (File child : files) {
+      if (child.isDirectory()) readFromDirectory(child, file);
+      else if (child.isFile()) {
+
+        String className = (!file.isFile() && child.getPath().startsWith(file.getPath()) ? child.getPath().substring(file.getPath().length() + 1) : "").replace(".class", "").replace("\\", ".").replace("/", ".");
+        if (registerTileEntityByClass(className)) return;
+
+      }
+    }
+  }
+
+  private static boolean registerTileEntityByClass(String className) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+    Class<?> clazz = Class.forName(className, true, modClassLoader);
+    if (!clazz.isAnnotationPresent(AutoRegistryTileEntity.class)) return true;
+    Object tile = clazz.newInstance();
+    AutoRegistryTileEntity annotation = clazz.getDeclaredAnnotation(AutoRegistryTileEntity.class);
+    if (!(tile instanceof TileEntity)) return true;
+    GameRegistry.registerTileEntity((Class<? extends TileEntity>) clazz, annotation.name().isEmpty() ? clazz.getName() : annotation.name());
+    return false;
+  }
+
+  public static class PineappleConfig extends ConfigBeanV2 implements IPineappleConfig {
+    public static boolean testBoolean = false;
+
+    public PineappleConfig() {
+      super("pineapple_psychic");
+      init();
     }
 
-    @Mod.EventHandler
-    public static void onServerInitialization(FMLServerStartingEvent event) {
-        // event.registerServerCommand(new CommandSetConfig());
+    @Override
+    public void init() {
+      testBoolean = this.getBoolean("testBooleanConfig", testBoolean);
+
+      this.build();
     }
-
-    private static void autoRegisterTileEntity() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-        ImmutableList<Object> knownLibraries = ImmutableList.builder().addAll(modClassLoader.getDefaultLibraries()).addAll(CoreModManager.getLoadedCoremods()).build();
-        File[] minecraftSources = modClassLoader.getParentSources();
-        HashSet<String> searchedSources = Sets.newHashSet();
-
-        for (File minecraftSource : minecraftSources) {
-            if (searchedSources.contains(minecraftSource.getAbsolutePath())) continue;
-            searchedSources.add(minecraftSource.getAbsolutePath());
-            if (minecraftSource.isFile()) {
-                if (knownLibraries.contains(minecraftSource.getName())) continue;
-                readFromZipFile(minecraftSource);
-            }
-            if (!minecraftSource.isDirectory()) continue;
-            readFromDirectory(minecraftSource, minecraftSource);
-        }
-    }
-
-    private static void readFromZipFile(File file) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-        FileInputStream fileinputstream = new FileInputStream(file);
-        ZipInputStream zipinputstream = new ZipInputStream(fileinputstream);
-
-        while (true) {
-            ZipEntry zipentry = zipinputstream.getNextEntry();
-            if (zipentry == null) break;
-
-            String fullName = zipentry.getName().replace('\\', '/');
-            int pos = fullName.lastIndexOf(47);
-            String name = pos == -1 ? fullName : fullName.substring(pos + 1);
-            if (zipentry.isDirectory()) continue;
-
-            String className = name.replace(".class", "").replace("\\", ".").replace("/", ".");
-            if (registerTileEntityByClass(className)) return;
-        }
-        fileinputstream.close();
-    }
-
-    private static void readFromDirectory(File directory, File file) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        File[] files = directory.listFiles();
-
-        if (files == null) return;
-        for (File child : files) {
-            if (child.isDirectory()) readFromDirectory(child, file);
-            else if (child.isFile()) {
-
-                String className = (!file.isFile() && child.getPath().startsWith(file.getPath()) ? child.getPath().substring(file.getPath().length() + 1) : "").replace(".class", "").replace("\\", ".").replace("/", ".");
-                if (registerTileEntityByClass(className)) return;
-
-            }
-        }
-    }
-
-    private static boolean registerTileEntityByClass(String className) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        Class<?> clazz = Class.forName(className, true, modClassLoader);
-        if (!clazz.isAnnotationPresent(AutoRegistryTileEntity.class)) return true;
-        Object tile = clazz.newInstance();
-        AutoRegistryTileEntity annotation = clazz.getDeclaredAnnotation(AutoRegistryTileEntity.class);
-        if (!(tile instanceof TileEntity)) return true;
-        GameRegistry.registerTileEntity((Class<? extends TileEntity>) clazz, annotation.name().isEmpty() ? clazz.getName() : annotation.name());
-        return false;
-    }
-
-    public static class PineappleConfig extends ConfigBeanV2 implements IPineappleConfig {
-        public static boolean testBoolean = false;
-
-        public PineappleConfig() {
-            super("pineapple_psychic");
-            init();
-        }
-
-        @Override
-        public void init() {
-            testBoolean = this.getBoolean("testBooleanConfig", testBoolean);
-
-            this.build();
-        }
-    }
+  }
 }
 
 
