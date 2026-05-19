@@ -68,7 +68,7 @@ repositories {
 }
 
 dependencies {
-    includeCompile 'club.snowlyicewolf:amarok-json-for-java:1.7.9'
+    includeCompile 'club.snowlyicewolf:amarok-json-for-java:1.7.11'
     includeCompile 'club.snowlyicewolf:amarok-kdl-for-java:1.0.1'
     includeCompile 'club.someoneice.cookie:PineappleCookie:1.2.1'
 
